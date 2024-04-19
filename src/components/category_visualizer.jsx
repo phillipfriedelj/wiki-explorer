@@ -13,9 +13,21 @@ export default function CategoryVisualizer() {
         console.log("CLICKED LETTER :: ", clickedLetter)
   
         const response = await fetch(`/api/categories/${clickedLetter}`)
-        const data = await response.json()
+        if( response.status === 200 ) {
+            const data = await response.json()
+            const categories = data.map(entry => {
+                return <div className='m-1 rounded-md p-2 bg-gray-400'> 
+                            <div className="flex space-x-1">
+                                <p className='text-sm font-bold'>{entry.title}</p>
+                            </div>
+                       <button onClick={() => setSelectedLink(`https://en.wikipedia.org/wiki/${entry.title}`)} className="text-xs text-[#646cff]">{"Go ->"}</button>
+                </div>
+            })
 
-        console.log("DATA ::: ", data.message)
+            setResults(categories)
+        } else {
+            console.log("500 STATUS ", response.status)
+        }
         // const mod = await import(`./data/${clickedLetter}.js`);
   
         // const results = Object.entries(mod.default).map(([key, value]) => {
@@ -53,7 +65,7 @@ export default function CategoryVisualizer() {
                 <div className="flex flex-grow">
                 <div className='flex flex-col w-1/2 flex-1'>
                     <div className='flex-1 overflow-y-auto'>
-                    {results}
+                        {results}
                     </div>
                 </div>
                 <div className='w-1/2 flex-1'>
