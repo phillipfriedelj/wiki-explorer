@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model articles {
+  id                  Int                   @id @default(autoincrement())
+  title               String                @unique @db.VarChar(255)
+  first_letter        String                @db.Char(1)
+  categories_articles categories_articles[]
+}
+
+model categories {
+  id                  Int                   @id @default(autoincrement())
+  title               String                @unique @db.VarChar(255)
+  first_letter        String                @db.Char(1)
+  categories_articles categories_articles[]
+}
+
+model categories_articles {
+  category_id Int
+  article_id  Int
+  articles    articles   @relation(fields: [article_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  categories  categories @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([category_id, article_id])
+}
