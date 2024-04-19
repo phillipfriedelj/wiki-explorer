@@ -1,9 +1,10 @@
 import Image from "next/image";
+import CategoryVisualizer from "@/components/category_visualizer";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <h1>Wiki Explorer</h1>
+    <main className="flex flex-col flex-grow h-full min-h-screen">
+      <CategoryVisualizer />
     </main>
   );
 }
