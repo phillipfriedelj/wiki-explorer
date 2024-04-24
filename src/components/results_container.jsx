@@ -6,9 +6,10 @@ export default function ResultsContainer({ results, selectedLink }) {
       <div className="flex bg-gray-100 py-2 flex-1 overflow-y-auto w-full h-full">
         <div className="flex flex-grow">
           <ScrollArea w={"50%"} h={"100%"} offsetScrollbars>
-            <Accordion variant="contained" transitionDuration={150}>
+            {results}
+            {/* <Accordion variant="contained" transitionDuration={150}>
               {results}
-            </Accordion>
+            </Accordion> */}
           </ScrollArea>
           <div className="w-1/2 flex-1">
             <iframe

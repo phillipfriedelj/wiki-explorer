@@ -22,7 +22,9 @@ export default function CategoryVisualizer() {
 
   function parseResults(data) {
     const categories = data.map((entry) => {
-      return <CategoryCard category={entry} />;
+      return (
+        <CategoryCard category={entry} setSelectedLink={setSelectedLink} />
+      );
     });
 
     setResults(categories);
