@@ -6,12 +6,14 @@ import PageLayout from "@/layout/page_layout";
 import ResultsContainer from "./results_container";
 import CategoryCard from "./category_card";
 import { Loader } from "@mantine/core";
+import SearchBar from "./search_barj";
 
 export default function CategoryVisualizer() {
   const [selectedLetter, setSelectedLetter] = useState("a");
   const [selectedLink, setSelectedLink] = useState("");
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
     fetchCategoriesAndArticles("a");
@@ -45,9 +47,14 @@ export default function CategoryVisualizer() {
     setLoading(false);
   }
 
+  const handleSearch = (searchValue) => {
+    console.log("SEARCH FOR ", searchValue);
+  };
+
   return (
     <PageLayout subtitle={"Explore Wikipedia's categories"}>
       <div className="flex items-center space-x-4 w-full">
+        <SearchBar onSearch={handleSearch} />
         <LetterButtons handleClick={fetchCategoriesAndArticles} />
       </div>
       <ResultsContainer

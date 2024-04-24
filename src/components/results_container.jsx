@@ -50,6 +50,7 @@ export default function ResultsContainer({
     setActiveSplit(splitResults[activePage - 1]);
   }, [activePage]);
 
+  //TODO Add skeleton if no data
   return (
     <>
       <div className="flex py-2 flex-1 overflow-y-auto w-full h-full max-h-screen">
@@ -61,7 +62,7 @@ export default function ResultsContainer({
               overlayProps={{ radius: "md", blur: 2 }}
             />
             <ScrollArea w={"100%"} h={"100%"} offsetScrollbars>
-              {activeSplit}
+              {activeSplit && activeSplit}
             </ScrollArea>
             <CategoryPagination
               pageTotal={pageTotal}
