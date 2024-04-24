@@ -10,6 +10,7 @@ export default function CategoryCard({ category, setSelectedLink }) {
     return sorted.map((entry) => {
       return (
         <button
+          key={entry.articles.title}
           onClick={() => handleArticleClick(entry.articles.title)}
           className="text-xs bg-gray-300 rounded-md mr-10 pl-2 py-1 text-left hover:bg-gray-200"
         >
@@ -58,19 +59,7 @@ export default function CategoryCard({ category, setSelectedLink }) {
         <Stack align="stretch" justify="flex-start" gap="xs">
           {parseArticles(category.categories_articles)}
         </Stack>
-        {/* <ScrollArea h={"100%"}>
-        </ScrollArea> */}
       </Collapse>
     </Box>
   );
 }
-
-// <div className="m-1 rounded-md p-2 bg-gray-400">
-//   <div className="flex space-x-1">
-//     <p className="text-sm font-bold">{category.title}</p>
-
-//   </div>
-//   <div className="flex flex-col space-y-2">
-//     {parseArticles(category.categories_articles)}
-//   </div>
-// </div>

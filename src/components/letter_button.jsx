@@ -3,36 +3,25 @@ import { useState, useEffect } from "react";
 export default function LetterButton({
   letter,
   handleClick,
-  buttonState,
-  setButtonState,
+  active,
+  onChange,
 }) {
-  const [bgColor, setBgColor] = useState("bg-gray-500");
-
   useEffect(() => {
-    console.log("BS UPD:: ", buttonState);
-    if (buttonState[letter]) {
-      setBgColor("text-[#646cff]");
-    } else {
-      setBgColor("bg-gray-500");
-    }
-  }, [buttonState, letter]);
+    console.log("RE RENDER -- ", letter, " -- ", active);
+  }, []);
 
-  function handleButtonState(clickedLetter) {
-    const updatedButtonState = {
-      ...buttonState,
-      [clickedLetter]: !buttonState[clickedLetter],
-    };
-    setButtonState(updatedButtonState);
+  function clickHandler(letter) {
+    onChange(letter);
+    handleClick(letter);
   }
 
   return (
     <button
       key={letter}
-      className={`rounded-sm text-xs py-1 px-2 hover:scale-105 cursor-pointer ${bgColor}`}
-      onClick={() => {
-        handleButtonState(letter);
-        handleClick(letter);
-      }}
+      className={`rounded-sm text-xs py-1 px-2 hover:scale-105 cursor-pointer ${
+        active === letter ? "bg-[#646cff]" : "bg-gray-500"
+      }`}
+      onClick={() => clickHandler(letter)}
     >
       {letter}
     </button>

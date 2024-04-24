@@ -1,15 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import LetterButtons from "./letter_buttons";
 import PageLayout from "@/layout/page_layout";
 import ResultsContainer from "./results_container";
 import CategoryCard from "./category_card";
 
 export default function CategoryVisualizer() {
-  const [selectedLetter, setSelectedLetter] = useState("");
+  const [selectedLetter, setSelectedLetter] = useState("a");
   const [selectedLink, setSelectedLink] = useState("");
   const [results, setResults] = useState([]);
+
+  useEffect(() => {
+    fetchCategoriesAndArticles("a");
+  }, []);
 
   async function fetchCategoriesAndArticles(clickedLetter) {
     setSelectedLetter(selectedLetter);
@@ -26,7 +30,11 @@ export default function CategoryVisualizer() {
   function parseResults(data) {
     const categories = data.map((entry) => {
       return (
-        <CategoryCard category={entry} setSelectedLink={setSelectedLink} />
+        <CategoryCard
+          key={entry.title}
+          category={entry}
+          setSelectedLink={setSelectedLink}
+        />
       );
     });
 
@@ -36,7 +44,11 @@ export default function CategoryVisualizer() {
   return (
     <PageLayout subtitle={"Explore Wikipedia's categorys"}>
       <LetterButtons handleClick={fetchCategoriesAndArticles} />
-      <ResultsContainer results={results} selectedLink={selectedLink} />
+      <ResultsContainer
+        results={results}
+        selectedLink={selectedLink}
+        selectedLetter={selectedLetter}
+      />
     </PageLayout>
   );
 }
