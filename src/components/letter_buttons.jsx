@@ -1,24 +1,49 @@
+"use client";
+
+import LetterButton from "./letter_button";
+import { useState, useEffect } from "react";
+
 export default function LetterButtons({ handleClick }) {
+  const [buttonState, setButtonState] = useState(generateButtonState());
+  const [buttons, setButtons] = useState([]);
+
+  useEffect(() => {
+    generateLetterButtons();
+  }, []);
+
+  useEffect(() => {
+    console.log("BS UPDATED: ", buttonState);
+  }, [buttonState]);
+
+  function generateButtonState() {
+    const buttonStateObj = {};
+    for (let i = 0; i < 26; i++) {
+      buttonStateObj[String.fromCharCode(97 + i)] = false;
+    }
+    return buttonStateObj;
+  }
+
   function generateLetterButtons() {
     const letters = [];
     for (let i = 0; i < 26; i++) {
       letters.push(String.fromCharCode(97 + i));
     }
 
-    return letters.map((letter) => (
-      <button
-        key={letter}
-        className="rounded-sm bg-gray-500 text-xs py-1 px-2 hover:scale-105 cursor-pointer"
-        onClick={() => handleClick(letter)}
-      >
-        {letter}
-      </button>
-    ));
+    setButtons(
+      letters.map((letter) => (
+        <LetterButton
+          letter={letter}
+          handleClick={handleClick}
+          buttonState={buttonState}
+          setButtonState={setButtonState}
+        />
+      ))
+    );
   }
 
   return (
     <div className="flex space-x-2 overflow-x-auto py-2 shrink-0">
-      {generateLetterButtons()}
+      {buttons}
     </div>
   );
 }

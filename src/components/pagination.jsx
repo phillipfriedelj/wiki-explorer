@@ -1,3 +1,4 @@
+import { Pagination } from "@mantine/core";
 export default function Pagination() {
   // const articleCount = 0;
   // const categoryCount = 0;
@@ -11,4 +12,6 @@ export default function Pagination() {
   //   getArticleCount();
   //   getCategoryCount();
   // }, []);
+
+  return <Pagination></Pagination>;
 }

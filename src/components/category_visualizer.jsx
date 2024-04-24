@@ -7,10 +7,13 @@ import ResultsContainer from "./results_container";
 import CategoryCard from "./category_card";
 
 export default function CategoryVisualizer() {
+  const [selectedLetter, setSelectedLetter] = useState("");
   const [selectedLink, setSelectedLink] = useState("");
   const [results, setResults] = useState([]);
 
   async function fetchCategoriesAndArticles(clickedLetter) {
+    setSelectedLetter(selectedLetter);
+
     const response = await fetch(`/api/categories/${clickedLetter}`);
     if (response.status === 200) {
       const data = await response.json();

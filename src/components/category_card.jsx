@@ -1,5 +1,6 @@
 import { Group, Box, Button, Collapse, ScrollArea, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { IconChevronDown } from "@tabler/icons-react";
 
 export default function CategoryCard({ category, setSelectedLink }) {
   const [opened, { toggle }] = useDisclosure(false);
@@ -19,8 +20,9 @@ export default function CategoryCard({ category, setSelectedLink }) {
   }
 
   function handleArticleClick(clickedArticle) {
-    console.log("CLICKED :: ", clickedArticle);
-    setSelectedLink(`https://en.wikipedia.org/wiki/${clickedArticle}`);
+    setSelectedLink(
+      `https://en.wikipedia.org/wiki/${clickedArticle.replace(" ", "_")}`
+    );
   }
 
   return (
@@ -44,8 +46,8 @@ export default function CategoryCard({ category, setSelectedLink }) {
           </span>
           {"Go ->"}
         </button>
-        <button onClick={toggle} className="bg-blue-500 px-4">
-          a
+        <button onClick={toggle} className="px-4">
+          <IconChevronDown />
         </button>
       </Group>
 
