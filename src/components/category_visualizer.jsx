@@ -49,12 +49,12 @@ export default function CategoryVisualizer() {
     <PageLayout subtitle={"Explore Wikipedia's categories"}>
       <div className="flex items-center space-x-4 w-full">
         <LetterButtons handleClick={fetchCategoriesAndArticles} />
-        {loading && <Loader color="blue" size={22} />}
       </div>
       <ResultsContainer
         results={results}
         selectedLink={selectedLink}
         selectedLetter={selectedLetter}
+        loading={loading}
       />
     </PageLayout>
   );
