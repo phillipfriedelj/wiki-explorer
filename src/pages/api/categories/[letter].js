@@ -28,10 +28,8 @@ export default async function handler(req, res) {
     const categories = await fetchCategoriesByLetter();
     console.log("CATS: ", categories);
     res.status(200).json(categories);
-    //await prisma.$disconnect()
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "failed to load data" });
-    //await prisma.$disconnect()
   }
 }
