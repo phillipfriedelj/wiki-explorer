@@ -1,54 +1,66 @@
-import { Group, Box, Button, Collapse, ScrollArea } from "@mantine/core";
+import { Group, Box, Button, Collapse, ScrollArea, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
 export default function CategoryCard({ category, setSelectedLink }) {
   const [opened, { toggle }] = useDisclosure(false);
-  return (
-    <Box bg={"red"} w={"100%"}>
-      <Group mb={5}>
+
+  function parseArticles(articles) {
+    var sorted = articles?.sort((entry) => entry.articles.first_letter);
+    return sorted.map((entry) => {
+      return (
         <button
+          onClick={() => handleArticleClick(entry.articles.title)}
+          className="text-xs bg-gray-300 rounded-md mr-10 pl-2 py-1 text-left hover:bg-gray-200"
+        >
+          {entry.articles.title}
+        </button>
+      );
+    });
+  }
+
+  function handleArticleClick(clickedArticle) {
+    console.log("CLICKED :: ", clickedArticle);
+    setSelectedLink(`https://en.wikipedia.org/wiki/${clickedArticle}`);
+  }
+
+  return (
+    <Box w={"100%"} className="p-2">
+      <Group
+        justify="space-between"
+        wrap="nowrap"
+        className={`bg-gray-400 rounded-t-sm transition-all cursor-pointer ${
+          opened ? "" : "rounded-b-sm"
+        }`}
+        onClick={toggle}
+      >
+        <button
+          className="text-xs text-[#646cff] text-left p-2"
           onClick={() => {
-            toggle;
             setSelectedLink(`https://en.wikipedia.org/wiki/${category.title}`);
           }}
-          className="text-xs text-[#646cff] w-full text-left p-2"
         >
           <span className="text-sm font-bold pr-4 text-black capitalize">
             {category.title}
           </span>
           {"Go ->"}
         </button>
+        <button onClick={toggle} className="bg-blue-500 px-4">
+          a
+        </button>
       </Group>
 
-      <Collapse in={opened}>
-        <ScrollArea h={"100%"}>
+      <Collapse
+        in={opened}
+        className="bg-gray-400 py-2 px-2 max-h-52 overflow-x-auto rounded-b-sm border-t-2 border-gray-300"
+      >
+        <Stack align="stretch" justify="flex-start" gap="xs">
           {parseArticles(category.categories_articles)}
-        </ScrollArea>
+        </Stack>
+        {/* <ScrollArea h={"100%"}>
+        </ScrollArea> */}
       </Collapse>
     </Box>
-    // <Accordion.Item
-    //   className="capitalize"
-    //   key={category.title}
-    //   value={category.title}
-    // >
-    //   <Accordion.Control>{category.title}</Accordion.Control>
-    //   {parseArticles(category.categories_articles)}
-    // </Accordion.Item>
   );
-}
-
-function parseArticles(articles) {
-  var sorted = articles?.sort((entry) => entry.articles.first_letter);
-  return sorted.map((entry) => {
-    return (
-      <button
-        onClick={(e) => console.log("CLICKED ", e.target.value)}
-        className="text-xs bg-gray-100 rounded-md p-2 text-left hover:bg-gray-200"
-      >
-        {entry.articles.title}
-      </button>
-    );
-  });
 }
 
 // <div className="m-1 rounded-md p-2 bg-gray-400">
