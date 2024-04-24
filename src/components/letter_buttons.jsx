@@ -17,7 +17,7 @@ export default function LetterButtons({ handleClick }) {
   }
 
   return (
-    <div className="flex space-x-2 overflow-x-auto py-2">
+    <div className="flex space-x-2 overflow-x-auto py-2 shrink-0">
       {generateLetterButtons()}
     </div>
   );

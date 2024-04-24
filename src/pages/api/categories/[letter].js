@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   async function fetchCategoriesByLetter() {
     const categories = await prisma.categories.findMany({
       skip: 0,
-      take: 1,
+      take: 100,
       where: {
         first_letter: {
           equals: letter,
