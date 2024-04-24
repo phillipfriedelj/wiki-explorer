@@ -1,18 +1,11 @@
-"use client";
-
 import LetterButton from "./letter_button";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function LetterButtons({ handleClick }) {
   const [buttonState, setButtonState] = useState("a");
   var letters = generateLetters();
 
-  useEffect(() => {
-    console.log("BS UPDATED: ", buttonState);
-  }, [buttonState]);
-
   function activeButton(value) {
-    console.log("CLICKED ON -- ", value);
     setButtonState(value);
   }
 
@@ -38,8 +31,6 @@ export default function LetterButtons({ handleClick }) {
   }
 
   return (
-    <div className="flex space-x-2 overflow-x-auto py-2 shrink-0">
-      {generateButtons()}
-    </div>
+    <div className="flex space-x-2 py-2 shrink-0">{generateButtons()}</div>
   );
 }

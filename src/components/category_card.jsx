@@ -1,4 +1,4 @@
-import { Group, Box, Button, Collapse, ScrollArea, Stack } from "@mantine/core";
+import { Group, Box, Collapse, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconChevronDown } from "@tabler/icons-react";
 

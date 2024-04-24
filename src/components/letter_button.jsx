@@ -6,10 +6,6 @@ export default function LetterButton({
   active,
   onChange,
 }) {
-  useEffect(() => {
-    console.log("RE RENDER -- ", letter, " -- ", active);
-  }, []);
-
   function clickHandler(letter) {
     onChange(letter);
     handleClick(letter);
