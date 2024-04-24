@@ -47,9 +47,16 @@ export default function CategoryVisualizer() {
     setLoading(false);
   }
 
-  const handleSearch = (searchValue) => {
-    console.log("SEARCH FOR ", searchValue);
-  };
+  async function handleSearch(searchValue) {
+    // const results = await fetch(`/api/search/${searchValue.replace(" ", "|")}`);
+    const response = await fetch(`/api/search/${searchValue}`);
+    if (response.status === 200) {
+      const data = await response.json();
+      console.log("SEARCH FOR ", data);
+    } else {
+      console.log("500 STATUS ", response.status);
+    }
+  }
 
   return (
     <PageLayout subtitle={"Explore Wikipedia's categories"}>
