@@ -5,7 +5,6 @@ import LetterButtons from "./letter_buttons";
 import PageLayout from "@/layout/page_layout";
 import ResultsContainer from "./results_container";
 import CategoryCard from "./category_card";
-import { Loader } from "@mantine/core";
 import SearchBar from "./search_barj";
 
 export default function CategoryVisualizer() {
