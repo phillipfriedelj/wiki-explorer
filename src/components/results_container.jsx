@@ -2,11 +2,11 @@
 import { ScrollArea, LoadingOverlay } from "@mantine/core";
 import CategoryPagination from "./category_pagination";
 import { useEffect, useState, useCallback } from "react";
+import CategoryCard from "./category_card";
 
 export default function ResultsContainer({
-  results,
-  selectedLink,
   selectedLetter,
+  setLoading,
   loading,
 }) {
   const [pageTotal, setPageTotal] = useState(0);
@@ -17,6 +17,46 @@ export default function ResultsContainer({
   const [boundingIds, setBoundingIds] = useState({});
   const entriesPerPage = 100;
   const windowSize = 5;
+
+  //RESULTS FETCHING
+  const [results, setResults] = useState([]);
+  const [selectedLink, setSelectedLink] = useState("");
+
+  const fetchCategoriesAndArticles = useCallback(async () => {
+    setLoading(true);
+    const response = await fetch(`/api/categories/${selectedLetter}`);
+    if (response.status === 200) {
+      const data = await response.json();
+      parseResults(data);
+    } else {
+      console.log("500 STATUS ", response.status);
+    }
+  }, [selectedLetter]);
+
+  useEffect(() => {
+    fetchCategoriesAndArticles("a");
+  }, []);
+
+  useEffect(() => {
+    fetchCategoriesAndArticles();
+  }, [selectedLetter]);
+
+  function parseResults(data) {
+    const categories = data.map((entry) => {
+      return (
+        <CategoryCard
+          key={entry.title}
+          category={entry}
+          setSelectedLink={setSelectedLink}
+        />
+      );
+    });
+
+    setResults(categories);
+    setLoading(false);
+  }
+
+  //RESULTS FETCHING
 
   const getCategoryCount = useCallback(async () => {
     const response = await fetch(`/api/categories/count/${selectedLetter}`);
