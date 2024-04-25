@@ -2,7 +2,6 @@
 import { ScrollArea, LoadingOverlay } from "@mantine/core";
 import CategoryPagination from "./category_pagination";
 import { useEffect, useState, useCallback } from "react";
-import { useDisclosure } from "@mantine/hooks";
 
 export default function ResultsContainer({
   results,
@@ -13,7 +12,7 @@ export default function ResultsContainer({
   const [pageTotal, setPageTotal] = useState(0);
   const [splitResults, setSplitResults] = useState([]);
   const [activePage, setActivePage] = useState(1);
-  const [activeSplit, setActiveSplit] = useState(0);
+  const [activeSplit, setActiveSplit] = useState([]);
 
   const entriesPerPage = 100;
 
@@ -62,7 +61,7 @@ export default function ResultsContainer({
               overlayProps={{ radius: "md", blur: 2 }}
             />
             <ScrollArea w={"100%"} h={"100%"} offsetScrollbars>
-              {activeSplit && activeSplit}
+              {activeSplit}
             </ScrollArea>
             <CategoryPagination
               pageTotal={pageTotal}

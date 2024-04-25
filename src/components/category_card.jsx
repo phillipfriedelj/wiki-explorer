@@ -57,7 +57,9 @@ export default function CategoryCard({ category, setSelectedLink }) {
         className="bg-gray-400 py-2 px-2 max-h-52 overflow-x-auto rounded-b-sm border-t-2 border-gray-300"
       >
         <Stack align="stretch" justify="flex-start" gap="xs">
-          {parseArticles(category.categories_articles)}
+          {category &&
+            category.categories_articles &&
+            parseArticles(category.categories_articles)}
         </Stack>
       </Collapse>
     </Box>

@@ -17,7 +17,8 @@
     "@tabler/icons-react": "^3.2.0",
     "next": "14.2.2",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-use-scroll-direction": "^0.1.0"
   },
   "devDependencies": {
     "eslint": "^8",

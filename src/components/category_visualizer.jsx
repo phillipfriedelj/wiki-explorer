@@ -12,7 +12,7 @@ export default function CategoryVisualizer() {
   const [selectedLetter, setSelectedLetter] = useState("a");
   const [selectedLink, setSelectedLink] = useState("");
   const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
