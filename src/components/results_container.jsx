@@ -27,22 +27,17 @@ export default function ResultsContainer({
     const response = await fetch(`/api/categories/${selectedLetter}`);
     if (response.status === 200) {
       const data = await response.json();
-      parseResults(data);
+      const parsedData = parseResults(data);
+
+      setResults(parsedData);
+      setLoading(false);
     } else {
       console.log("500 STATUS ", response.status);
     }
   }, [selectedLetter]);
 
-  useEffect(() => {
-    fetchCategoriesAndArticles("a");
-  }, []);
-
-  useEffect(() => {
-    fetchCategoriesAndArticles();
-  }, [selectedLetter]);
-
   function parseResults(data) {
-    const categories = data.map((entry) => {
+    const parsedResults = data.map((entry) => {
       return (
         <CategoryCard
           key={entry.title}
@@ -51,9 +46,7 @@ export default function ResultsContainer({
         />
       );
     });
-
-    setResults(categories);
-    setLoading(false);
+    return parsedResults;
   }
 
   //RESULTS FETCHING
@@ -117,8 +110,22 @@ export default function ResultsContainer({
         const newPages = await response.json();
         console.log("NEW PAGES -- ", newPages);
         //PARSE RESULTS TO COMPONENT
+        const parsedResults = parseResults(newPages);
+        const split = splitResultsPerPage(parsedResults);
+        console.log("SPLIT R :: ", splitResults);
+        console.log("SPLIT NEW --- ", split);
         //ADD TO NEW SPLIT
+        if (direction === "up") {
+          newWindowPageSplits = [...newWindowPageSplits, ...split];
+        } else if (direction === "down") {
+          newWindowPageSplits = [...split, ...newWindowPageSplits];
+        }
+        const boundIds = getBoundingIds(newWindowPageSplits);
+        setBoundingIds(boundIds);
+        console.log("### BOUND IDS NEW ", boundIds);
         //SET NEW SPLIT
+        console.log("NEW SPLIT FINAL -- ", newWindowPageSplits);
+        setSplitResults(newWindowPageSplits);
       } else {
         console.log("500 STATUS ", response.status);
       }
@@ -127,28 +134,43 @@ export default function ResultsContainer({
     }
   }
 
-  function getBoundingIds() {
-    if (results && results.length > 0) {
-      const min = results[0].props.category.id;
-      const max = results[results.length - 1].props.category.id;
+  function getBoundingIds(dataRange) {
+    if (dataRange && dataRange.length > 0) {
+      const min = dataRange[0][0].props.category.id;
 
-      setBoundingIds({ min: min, max: max });
+      const lastArr = dataRange[dataRange.length - 1];
+      const lastEntry = lastArr[lastArr.length - 1];
+      const max = lastEntry.props.category.id;
+      console.log("MIN -- ", min, " -- MAX -- ", max);
+      return { min: min, max: max };
     }
   }
 
-  function splitResultsPerPage() {
+  function splitResultsPerPage(data) {
     const split = [];
-    for (let i = 0; i < results.length; i += entriesPerPage) {
-      split.push(results.slice(i, i + entriesPerPage));
+    for (let i = 0; i < data.length; i += entriesPerPage) {
+      split.push(data.slice(i, i + entriesPerPage));
     }
-    setActiveSplit(split[activePage - 1]);
-    setSplitResults(split);
+
+    return split;
   }
 
   useEffect(() => {
+    fetchCategoriesAndArticles("a");
+  }, []);
+
+  useEffect(() => {
+    fetchCategoriesAndArticles();
+  }, [selectedLetter]);
+
+  useEffect(() => {
     setWindow({ start: 1, end: windowSize });
-    getBoundingIds();
-    splitResultsPerPage();
+    const split = splitResultsPerPage(results);
+    const boundingIds = getBoundingIds(split);
+    setBoundingIds(boundingIds);
+    console.log("START SPLIT -- ", split);
+    setActiveSplit(split[activePage - 1]);
+    setSplitResults(split);
     getCategoryCount();
   }, [results, getCategoryCount]);
 
@@ -158,7 +180,14 @@ export default function ResultsContainer({
   }, [selectedLetter]);
 
   useEffect(() => {
-    setActiveSplit(splitResults[activePage - 1]);
+    // const slope = (window.end - window.start) / (5 - 1);
+    // const output = window.start + slope * (activePage - 1);
+    const slope = (5 - 1) / (window.end - window.start);
+    const mappedPos = 1 + slope * (activePage - window.start);
+
+    // console.log("POS IN WINDOW: ", output);
+
+    setActiveSplit(splitResults[mappedPos - 1]);
   }, [activePage]);
 
   //TODO Add skeleton if no data
