@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
+import { Modal } from "@mantine/core";
 
 function NodeGraph() {
   const ref = useRef();
@@ -10,8 +11,13 @@ function NodeGraph() {
   const height = 600;
 
   useEffect(() => {
+    const svgElement = ref.current;
+
+    const width = svgElement.getBoundingClientRect().width;
+    const height = svgElement.getBoundingClientRect().height;
+
     const svg = d3
-      .select(ref.current)
+      .select(svgElement)
       .attr("width", width)
       .attr("height", height)
       .style("border", "1px solid black");
@@ -148,8 +154,8 @@ function NodeGraph() {
   }, [nodes, links]);
 
   return (
-    <div className="bg-gray-600 flex-1 w-full">
-      <svg ref={ref} className="flex grow"></svg>
+    <div className="bg-gray-600 flex-1 w-full relative">
+      <svg ref={ref} className="absolute inset-0 w-full h-full"></svg>
       <div id="info"></div>
     </div>
   );
