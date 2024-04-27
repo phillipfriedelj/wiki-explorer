@@ -4,6 +4,7 @@ import CategoryVisualizer from "@/sections/category_visualizer";
 import FunctionTabs from "@/components/function_tabs";
 import { useEffect, useState } from "react";
 import Overview from "@/sections/overview";
+import NodeGraph from "@/components/node-graph";
 
 export default function MainPage() {
   const [activeTab, setActiveTab] = useState("overview");
