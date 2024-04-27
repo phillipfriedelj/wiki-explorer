@@ -24,11 +24,12 @@ export default function ResultsContainer({
 
   const fetchCategoriesAndArticles = useCallback(async () => {
     setLoading(true);
-    const response = await fetch(`/api/categories/${selectedLetter}`);
+    const response = await fetch(
+      `/api/categories?letter=${selectedLetter}&pageFrom=${1}&pageTo=${5}`
+    );
     if (response.status === 200) {
       const data = await response.json();
       const parsedData = parseResults(data);
-
       setResults(parsedData);
       setLoading(false);
     } else {
@@ -49,7 +50,7 @@ export default function ResultsContainer({
     return parsedResults;
   }
 
-  //RESULTS FETCHING
+  //TODO Refactor
 
   const getCategoryCount = useCallback(async () => {
     const response = await fetch(`/api/categories/count/${selectedLetter}`);
@@ -61,89 +62,89 @@ export default function ResultsContainer({
     }
   }, [selectedLetter, entriesPerPage]);
 
-  async function handlePageChange(newActivePage) {
-    setActivePage(newActivePage);
+  function calculateNewWindow(newActivePage) {
+    var end;
+    var start;
 
-    if (newActivePage <= window.start || newActivePage >= window.end) {
-      var end;
-      var start;
-
-      if (newActivePage === 1) {
-        start = 1;
-      } else {
-        start = newActivePage - Math.floor(windowSize / 2);
-        start = start === 0 ? 1 - start : start;
-      }
-
-      if (newActivePage === pageTotal) {
-        end = pageTotal;
-        start = pageTotal - windowSize;
-      } else {
-        end = newActivePage + Math.floor(windowSize / 2);
-        end = start + windowSize > end ? start + windowSize - 1 : end;
-      }
-
-      var newWindow = {
-        start: start,
-        end: end,
-      };
-
-      var newWindowPageSplits = [];
-      var nextId;
-      var direction;
-      if (activePage - newActivePage < 0) {
-        newWindowPageSplits = splitResults.slice(Math.floor(windowSize / 2));
-        nextId = boundingIds.max;
-        direction = "up";
-      } else if (activePage - newActivePage > 0) {
-        newWindowPageSplits = splitResults.slice(0, Math.floor(windowSize / 2));
-        nextId = boundingIds.min;
-        direction = "down";
-      }
-
-      const response = await fetch(
-        `/api/categories/${selectedLetter}/${
-          2 * entriesPerPage
-        }/${direction}/${nextId}`
-      );
-      if (response.status === 200) {
-        const newPages = await response.json();
-        console.log("NEW PAGES -- ", newPages);
-        //PARSE RESULTS TO COMPONENT
-        const parsedResults = parseResults(newPages);
-        const split = splitResultsPerPage(parsedResults);
-        console.log("SPLIT R :: ", splitResults);
-        console.log("SPLIT NEW --- ", split);
-        //ADD TO NEW SPLIT
-        if (direction === "up") {
-          newWindowPageSplits = [...newWindowPageSplits, ...split];
-        } else if (direction === "down") {
-          newWindowPageSplits = [...split, ...newWindowPageSplits];
-        }
-        const boundIds = getBoundingIds(newWindowPageSplits);
-        setBoundingIds(boundIds);
-        console.log("### BOUND IDS NEW ", boundIds);
-        //SET NEW SPLIT
-        console.log("NEW SPLIT FINAL -- ", newWindowPageSplits);
-        setSplitResults(newWindowPageSplits);
-      } else {
-        console.log("500 STATUS ", response.status);
-      }
-
-      setWindow(newWindow);
+    if (newActivePage === 1) {
+      start = 1;
+    } else {
+      start = newActivePage - Math.floor(windowSize / 2);
+      start = start === 0 ? 1 - start : start;
     }
+    if (newActivePage === pageTotal) {
+      end = pageTotal;
+      start = pageTotal - windowSize;
+    } else {
+      end = newActivePage + Math.floor(windowSize / 2);
+      end = start + windowSize > end ? start + windowSize - 1 : end;
+    }
+    var newWindow = {
+      start: start,
+      end: end,
+    };
+
+    return newWindow;
   }
 
-  function getBoundingIds(dataRange) {
-    if (dataRange && dataRange.length > 0) {
-      const min = dataRange[0][0].props.category.id;
-
-      const lastArr = dataRange[dataRange.length - 1];
-      const lastEntry = lastArr[lastArr.length - 1];
-      const max = lastEntry.props.category.id;
-      console.log("MIN -- ", min, " -- MAX -- ", max);
-      return { min: min, max: max };
+  async function handlePageChange(newActivePage) {
+    setActivePage(newActivePage);
+    if (activePage === newActivePage) {
+      return;
+    } else if (newActivePage > window.start && newActivePage < window.end) {
+      return;
     }
+    const newWindow = calculateNewWindow(newActivePage);
+    var direction = activePage - newActivePage < 0 ? "up" : "down";
+
+    var keepSlices;
+    var fetchFrom;
+    var fetchTo;
+    if (direction === "up") {
+      var commonPages = newWindow.start - window.end;
+      if (commonPages <= 0) {
+        keepSlices = splitResults.slice(commonPages - 1);
+        commonPages = Math.abs(commonPages) + 1;
+        fetchFrom = newWindow.start + commonPages;
+        fetchTo = newWindow.end;
+      } else {
+        fetchFrom = newWindow.start;
+        fetchTo = newWindow.end;
+      }
+    } else if (direction === "down") {
+      var commonPages = newWindow.end - window.start;
+      if (commonPages >= 0) {
+        keepSlices = splitResults.slice(0, commonPages + 1);
+        fetchFrom = newWindow.start;
+        fetchTo = newWindow.end - (commonPages - 1);
+      } else {
+        fetchFrom = newWindow.start;
+        fetchTo = newWindow.end;
+      }
+    }
+
+    const response = await fetch(
+      `/api/categories?letter=${selectedLetter}&pageFrom=${fetchFrom}&pageTo=${fetchTo}`
+    );
+
+    if (response.status === 200) {
+      const newPages = await response.json();
+      console.log("FETCHED -- ", newPages);
+      const parsedResults = parseResults(newPages);
+      const split = splitResultsPerPage(parsedResults);
+
+      var newWindowPageSplits = keepSlices || [];
+      if (direction === "up") {
+        newWindowPageSplits = [...newWindowPageSplits, ...split];
+      } else if (direction === "down") {
+        newWindowPageSplits = [...split, ...newWindowPageSplits];
+      }
+      setSplitResults(newWindowPageSplits);
+    } else if (response.status === 500) {
+      console.log("500 STATUS ", response.status);
+    }
+
+    setWindow(newWindow);
   }
 
   function splitResultsPerPage(data) {
@@ -164,10 +165,10 @@ export default function ResultsContainer({
   }, [selectedLetter]);
 
   useEffect(() => {
+    console.log("RESULTS CHANGED");
     setWindow({ start: 1, end: windowSize });
     const split = splitResultsPerPage(results);
-    const boundingIds = getBoundingIds(split);
-    setBoundingIds(boundingIds);
+
     console.log("START SPLIT -- ", split);
     setActiveSplit(split[activePage - 1]);
     setSplitResults(split);
@@ -180,15 +181,10 @@ export default function ResultsContainer({
   }, [selectedLetter]);
 
   useEffect(() => {
-    // const slope = (window.end - window.start) / (5 - 1);
-    // const output = window.start + slope * (activePage - 1);
     const slope = (5 - 1) / (window.end - window.start);
     const mappedPos = 1 + slope * (activePage - window.start);
-
-    // console.log("POS IN WINDOW: ", output);
-
     setActiveSplit(splitResults[mappedPos - 1]);
-  }, [activePage]);
+  }, [activePage, splitResults]);
 
   //TODO Add skeleton if no data
   return (

@@ -12,6 +12,7 @@ export default function CategoryPagination({
         size="sm"
         radius="xs"
         className="center"
+        siblings={5}
         value={activePage}
         onChange={setActivePage}
       />

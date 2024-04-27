@@ -15,10 +15,10 @@ export default async function handler(req, res) {
       " --DIRECTION: ",
       direction
     );
-    const filter =
-      direction === "up"
-        ? { id: { gt: parseInt(id) } }
-        : { id: { lt: parseInt(id) } };
+    // const filter =
+    //   direction === "up"
+    //     ? { id: { gt: parseInt(id) } }
+    //     : { id: { lt: parseInt(id) } };
     const categories = await prisma.categories.findMany({
       where: {
         AND: [
@@ -34,9 +34,9 @@ export default async function handler(req, res) {
           },
         },
       },
-      cursor: {
-        id: parseInt(id), // Start from the specified ID, parsed to integer
-      },
+      // cursor: {
+      //   id: parseInt(id), // Start from the specified ID, parsed to integer
+      // },
       take: parseInt(count), // Limit the number of entries returned
       orderBy: {
         id: direction === "up" ? "asc" : "desc", // Order by ID based on the direction
