@@ -23,6 +23,7 @@ export default function ResultsContainer({
   const [selectedLink, setSelectedLink] = useState("");
 
   const fetchCategoriesAndArticles = useCallback(async () => {
+    console.log("CALLED FCANDARTS");
     setLoading(true);
     const response = await fetch(
       `/api/categories?letter=${selectedLetter}&pageFrom=${1}&pageTo=${5}`
@@ -68,13 +69,14 @@ export default function ResultsContainer({
 
     if (newActivePage === 1) {
       start = 1;
+      end = 5;
     } else {
       start = newActivePage - Math.floor(windowSize / 2);
       start = start === 0 ? 1 - start : start;
     }
     if (newActivePage === pageTotal) {
       end = pageTotal;
-      start = pageTotal - windowSize;
+      start = pageTotal - (windowSize - 1);
     } else {
       end = newActivePage + Math.floor(windowSize / 2);
       end = start + windowSize > end ? start + windowSize - 1 : end;
@@ -91,9 +93,13 @@ export default function ResultsContainer({
     setActivePage(newActivePage);
     if (activePage === newActivePage) {
       return;
-    } else if (newActivePage > window.start && newActivePage < window.end) {
+    } else if (newActivePage >= window.start && newActivePage <= window.end) {
+      const slope = (5 - 1) / (window.end - window.start);
+      const mappedPos = 1 + slope * (newActivePage - window.start);
+      setActiveSplit(splitResults[mappedPos - 1]);
       return;
     }
+    setLoading(true);
     const newWindow = calculateNewWindow(newActivePage);
     var direction = activePage - newActivePage < 0 ? "up" : "down";
 
@@ -129,7 +135,8 @@ export default function ResultsContainer({
 
     if (response.status === 200) {
       const newPages = await response.json();
-      console.log("FETCHED -- ", newPages);
+      console.log("NEW WINDOW :: ", newWindow);
+      console.log("NEW PAGES :: ", newPages);
       const parsedResults = parseResults(newPages);
       const split = splitResultsPerPage(parsedResults);
 
@@ -139,7 +146,12 @@ export default function ResultsContainer({
       } else if (direction === "down") {
         newWindowPageSplits = [...split, ...newWindowPageSplits];
       }
+
+      const slope = (5 - 1) / (newWindow.end - newWindow.start);
+      const mappedPos = 1 + slope * (newActivePage - newWindow.start);
+      setActiveSplit(newWindowPageSplits[mappedPos - 1]);
       setSplitResults(newWindowPageSplits);
+      setLoading(false);
     } else if (response.status === 500) {
       console.log("500 STATUS ", response.status);
     }
@@ -165,6 +177,10 @@ export default function ResultsContainer({
   }, [selectedLetter]);
 
   useEffect(() => {
+    console.log("UPDATED AS :: ", activeSplit);
+  }, [activeSplit]);
+
+  useEffect(() => {
     console.log("RESULTS CHANGED");
     setWindow({ start: 1, end: windowSize });
     const split = splitResultsPerPage(results);
@@ -180,11 +196,9 @@ export default function ResultsContainer({
     setSplitResults([]);
   }, [selectedLetter]);
 
-  useEffect(() => {
-    const slope = (5 - 1) / (window.end - window.start);
-    const mappedPos = 1 + slope * (activePage - window.start);
-    setActiveSplit(splitResults[mappedPos - 1]);
-  }, [activePage, splitResults]);
+  // useEffect(() => {
+
+  // }, [activePage, splitResults]);
 
   //TODO Add skeleton if no data
   return (

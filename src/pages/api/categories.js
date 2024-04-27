@@ -58,6 +58,7 @@ export default async function handler(req, res) {
 
   try {
     if (letter && pageFrom && pageTo) {
+      console.log("FETCH FROM ", pageFrom, " TO ", pageTo);
       const categories = await fetchCategoriesByLetter();
       res.status(200).json(categories);
     } else if (letter && !pageFrom && !pageTo) {
