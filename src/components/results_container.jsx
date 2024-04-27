@@ -14,12 +14,10 @@ export default function ResultsContainer({
   const [activePage, setActivePage] = useState(1);
   const [activeSplit, setActiveSplit] = useState([]);
   const [window, setWindow] = useState([]);
-  const [boundingIds, setBoundingIds] = useState({});
   const entriesPerPage = 100;
   const windowSize = 5;
 
   //RESULTS FETCHING
-  const [results, setResults] = useState([]);
   const [selectedLink, setSelectedLink] = useState("");
 
   const fetchCategoriesAndArticles = useCallback(async () => {
@@ -31,7 +29,14 @@ export default function ResultsContainer({
     if (response.status === 200) {
       const data = await response.json();
       const parsedData = parseResults(data);
-      setResults(parsedData);
+
+      setWindow({ start: 1, end: windowSize });
+      const split = splitResultsPerPage(parsedData);
+
+      setActiveSplit(split[activePage - 1]);
+      setSplitResults(split);
+      getCategoryCount();
+
       setLoading(false);
     } else {
       console.log("500 STATUS ", response.status);
@@ -174,31 +179,9 @@ export default function ResultsContainer({
 
   useEffect(() => {
     fetchCategoriesAndArticles();
-  }, [selectedLetter]);
-
-  useEffect(() => {
-    console.log("UPDATED AS :: ", activeSplit);
-  }, [activeSplit]);
-
-  useEffect(() => {
-    console.log("RESULTS CHANGED");
-    setWindow({ start: 1, end: windowSize });
-    const split = splitResultsPerPage(results);
-
-    console.log("START SPLIT -- ", split);
-    setActiveSplit(split[activePage - 1]);
-    setSplitResults(split);
-    getCategoryCount();
-  }, [results, getCategoryCount]);
-
-  useEffect(() => {
     setActivePage(1);
     setSplitResults([]);
   }, [selectedLetter]);
-
-  // useEffect(() => {
-
-  // }, [activePage, splitResults]);
 
   //TODO Add skeleton if no data
   return (

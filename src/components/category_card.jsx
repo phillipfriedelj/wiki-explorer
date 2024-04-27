@@ -1,4 +1,4 @@
-import { Group, Box, Collapse, Stack } from "@mantine/core";
+import { Group, Box, Collapse, Stack, ScrollArea } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconChevronDown } from "@tabler/icons-react";
 
@@ -36,7 +36,10 @@ export default function CategoryCard({ category, setSelectedLink }) {
         }`}
         onClick={toggle}
       >
-        <button
+        <p className="p-2 text-left text-sm font-bold text-black capitalize">
+          {category.title}
+        </p>
+        {/* <button
           className="text-xs text-[#646cff] text-left p-2"
           onClick={() => {
             setSelectedLink(`https://en.wikipedia.org/wiki/${category.title}`);
@@ -46,7 +49,7 @@ export default function CategoryCard({ category, setSelectedLink }) {
             {category.title}
           </span>
           {"Go ->"}
-        </button>
+        </button> */}
         <button onClick={toggle} className="px-4">
           <IconChevronDown />
         </button>
@@ -54,13 +57,15 @@ export default function CategoryCard({ category, setSelectedLink }) {
 
       <Collapse
         in={opened}
-        className="bg-gray-400 py-2 px-2 max-h-52 overflow-x-auto rounded-b-sm border-t-2 border-gray-300"
+        className="bg-gray-400 py-2 px-2 max-h-52 rounded-b-sm border-t-2 border-gray-300"
       >
-        <Stack align="stretch" justify="flex-start" gap="xs">
+        <ScrollArea w={"100%"} h={"100%"} offsetScrollbars>
           {category &&
             category.categories_articles &&
             parseArticles(category.categories_articles)}
-        </Stack>
+        </ScrollArea>
+        {/* <Stack align="stretch" justify="flex-start" gap="xs">
+        </Stack> */}
       </Collapse>
     </Box>
   );
