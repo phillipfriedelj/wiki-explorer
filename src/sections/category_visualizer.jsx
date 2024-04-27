@@ -1,11 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import LetterButtons from "./letter_buttons";
-import PageLayout from "@/layout/page_layout";
-import ResultsContainer from "./results_container";
-
-import SearchBar from "./search_barj";
+import { useState } from "react";
+import LetterButtons from "../components/letter_buttons";
+import ResultsContainer from "../components/results_container";
+import SearchBar from "../components/search_barj";
 
 export default function CategoryVisualizer() {
   const [loading, setLoading] = useState(true);
@@ -24,7 +22,7 @@ export default function CategoryVisualizer() {
   }
 
   return (
-    <PageLayout subtitle={"Explore Wikipedia's categories"}>
+    <>
       <div className="flex items-center space-x-4 w-full">
         <SearchBar onSearch={handleSearch} />
         <LetterButtons handleClick={setSelectedLetter} />
@@ -34,6 +32,6 @@ export default function CategoryVisualizer() {
         setLoading={setLoading}
         loading={loading}
       />
-    </PageLayout>
+    </>
   );
 }

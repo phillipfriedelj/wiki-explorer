@@ -1,3 +1,5 @@
+import FunctionTabs from "@/components/function_tabs";
+
 export default function PageLayout({ subtitle, children }) {
   return (
     <div className="flex flex-col flex-grow h-full max-h-screen">
