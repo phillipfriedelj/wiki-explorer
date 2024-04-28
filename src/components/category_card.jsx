@@ -39,17 +39,6 @@ export default function CategoryCard({ category, setSelectedLink }) {
         <p className="p-2 text-left text-sm font-bold text-black capitalize">
           {category.title}
         </p>
-        {/* <button
-          className="text-xs text-[#646cff] text-left p-2"
-          onClick={() => {
-            setSelectedLink(`https://en.wikipedia.org/wiki/${category.title}`);
-          }}
-        >
-          <span className="text-sm font-bold pr-4 text-black capitalize">
-            {category.title}
-          </span>
-          {"Go ->"}
-        </button> */}
         <button onClick={toggle} className="px-4">
           <IconChevronDown />
         </button>
@@ -57,15 +46,13 @@ export default function CategoryCard({ category, setSelectedLink }) {
 
       <Collapse
         in={opened}
-        className="bg-gray-400 py-2 px-2 max-h-52 rounded-b-sm border-t-2 border-gray-300"
+        className="bg-gray-400 py-2 px-2 max-h-52 rounded-b-sm border-t-2 border-gray-300 overflow-y-auto"
       >
-        <ScrollArea w={"100%"} h={"100%"} offsetScrollbars>
+        <Stack align="stretch" justify="flex-start" gap="xs">
           {category &&
             category.categories_articles &&
             parseArticles(category.categories_articles)}
-        </ScrollArea>
-        {/* <Stack align="stretch" justify="flex-start" gap="xs">
-        </Stack> */}
+        </Stack>
       </Collapse>
     </Box>
   );
