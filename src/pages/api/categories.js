@@ -1,16 +1,14 @@
 import { PrismaClient } from "@prisma/client";
 
 export default async function handler(req, res) {
-  const { letter, pageFrom, pageTo } = req.query;
+  const { letter, page, amount } = req.query;
   const prisma = new PrismaClient();
-  const entriesPerPage = 100;
 
   async function fetchCategoriesByLetter() {
-    const skip = pageFrom - 1;
-    const take = (pageTo - pageFrom + 1) * entriesPerPage;
     const categories = await prisma.categories.findMany({
-      skip: skip,
-      take: take,
+      skip: (parseInt(page) - 1) * parseInt(amount),
+      take: parseInt(amount),
+      orderBy: { title: "asc" },
       where: {
         first_letter: {
           equals: letter,
@@ -48,13 +46,11 @@ export default async function handler(req, res) {
   }
 
   try {
-    if (letter && pageFrom && pageTo) {
-      console.log("FETCH FROM ", pageFrom, " TO ", pageTo);
+    if (letter && page && amount) {
       const categories = await fetchCategoriesByLetter();
       res.status(200).json(categories);
-    } else if (letter && !pageFrom && !pageTo) {
+    } else if (letter && !page && !amount) {
       const categoryCount = await getCategoryCountByLetter();
-      console.log("CATEGORY COUNT -- ", categoryCount, " FOR ", letter);
       res.status(200).json(categoryCount);
     } else {
       const categoryCount = await getCategoryCount();

@@ -10,7 +10,7 @@ import {
 } from "@/queries/get-categories";
 
 export async function getStaticProps() {
-  const categories = await getCategoriesByLetterAndPage("a", 1, 5);
+  const categories = await getCategoriesByLetterAndPage("a", 1, 50);
   // const categoryCount = await getCategoryCount("a");
   return { categories };
 }
@@ -18,16 +18,15 @@ export async function getStaticProps() {
 export default function ResultsContainer({ selectedLetter, categories }) {
   const [activePage, setActivePage] = useState(1);
   const [pageTotal, setPageTotal] = useState(0);
-  const entriesPerPage = 100;
+  const entriesPerPage = 50;
 
   const queryClient = useQueryClient();
 
-  //RESULTS FETCHING
   const [selectedLink, setSelectedLink] = useState("");
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ["categories", selectedLetter, activePage],
     queryFn: () =>
-      getCategoriesByLetterAndPage(selectedLetter, activePage, activePage),
+      getCategoriesByLetterAndPage(selectedLetter, activePage, entriesPerPage),
     initialData: categories,
     staleTime: 0,
     keepPreviousData: true,
@@ -46,9 +45,15 @@ export default function ResultsContainer({ selectedLetter, categories }) {
   function fetchCategoriesAndArticles() {
     console.log("DATA ", data);
     if (!isError && !isLoading && data.length > 0) {
-      const parsedData = parseResults(data);
-
-      return parsedData;
+      return data.map((entry) => {
+        return (
+          <CategoryCard
+            key={entry.title}
+            category={entry}
+            setSelectedLink={setSelectedLink}
+          />
+        );
+      });
     } else {
       console.log("500 STATUS ", error);
       return <p>Error loading data...</p>;
@@ -66,22 +71,13 @@ export default function ResultsContainer({ selectedLetter, categories }) {
     queryClient.prefetchQuery({
       queryKey: ["categories", selectedLetter, nextPage],
       queryFn: () =>
-        getCategoriesByLetterAndPage(selectedLetter, nextPage, nextPage),
+        getCategoriesByLetterAndPage(selectedLetter, nextPage, entriesPerPage),
     });
   }, [activePage, queryClient]);
 
-  function parseResults(data) {
-    const parsedResults = data.map((entry) => {
-      return (
-        <CategoryCard
-          key={entry.title}
-          category={entry}
-          setSelectedLink={setSelectedLink}
-        />
-      );
-    });
-    return parsedResults;
-  }
+  useEffect(() => {
+    setActivePage(1);
+  }, selectedLetter);
 
   async function handlePageChange(newActivePage) {
     setActivePage(newActivePage);
