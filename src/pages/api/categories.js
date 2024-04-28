@@ -5,35 +5,6 @@ export default async function handler(req, res) {
   const prisma = new PrismaClient();
   const entriesPerPage = 100;
 
-  async function getCategoryCount() {
-    const categoryCount = await prisma.categories.aggregate({
-      _count: {
-        title: true,
-      },
-    });
-    return categoryCount;
-  }
-
-  async function fetchCategoriesByLetter() {
-    const categories = await prisma.categories.findMany({
-      skip: 0,
-      take: 500,
-      where: {
-        first_letter: {
-          equals: letter,
-        },
-      },
-      include: {
-        categories_articles: {
-          include: {
-            articles: true,
-          },
-        },
-      },
-    });
-    return categories;
-  }
-
   async function fetchCategoriesByLetter() {
     const skip = pageFrom - 1;
     const take = (pageTo - pageFrom + 1) * entriesPerPage;
@@ -56,13 +27,35 @@ export default async function handler(req, res) {
     return categories;
   }
 
+  async function getCategoryCountByLetter() {
+    const categoryCount = await prisma.categories.count({
+      where: {
+        first_letter: {
+          equals: letter,
+        },
+      },
+    });
+    return categoryCount;
+  }
+
+  async function getCategoryCount() {
+    const categoryCount = await prisma.categories.aggregate({
+      _count: {
+        title: true,
+      },
+    });
+    return categoryCount;
+  }
+
   try {
     if (letter && pageFrom && pageTo) {
       console.log("FETCH FROM ", pageFrom, " TO ", pageTo);
       const categories = await fetchCategoriesByLetter();
       res.status(200).json(categories);
     } else if (letter && !pageFrom && !pageTo) {
-      res.status(400).json("Bad request");
+      const categoryCount = await getCategoryCountByLetter();
+      console.log("CATEGORY COUNT -- ", categoryCount, " FOR ", letter);
+      res.status(200).json(categoryCount);
     } else {
       const categoryCount = await getCategoryCount();
       res.status(200).json(categoryCount);

@@ -3,45 +3,72 @@ import { ScrollArea, LoadingOverlay } from "@mantine/core";
 import CategoryPagination from "./category_pagination";
 import { useEffect, useState, useCallback } from "react";
 import CategoryCard from "./category_card";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  getCategoriesByLetterAndPage,
+  getCategoryCount,
+} from "@/queries/get-categories";
 
-export default function ResultsContainer({
-  selectedLetter,
-  setLoading,
-  loading,
-}) {
-  const [pageTotal, setPageTotal] = useState(0);
-  const [splitResults, setSplitResults] = useState([]);
+export async function getStaticProps() {
+  const categories = await getCategoriesByLetterAndPage("a", 1, 5);
+  // const categoryCount = await getCategoryCount("a");
+  return { categories };
+}
+
+export default function ResultsContainer({ selectedLetter, categories }) {
   const [activePage, setActivePage] = useState(1);
-  const [activeSplit, setActiveSplit] = useState([]);
-  const [window, setWindow] = useState([]);
+  const [pageTotal, setPageTotal] = useState(0);
   const entriesPerPage = 100;
-  const windowSize = 5;
+
+  const queryClient = useQueryClient();
 
   //RESULTS FETCHING
   const [selectedLink, setSelectedLink] = useState("");
+  const { isLoading, isError, data, error } = useQuery({
+    queryKey: ["categories", selectedLetter, activePage],
+    queryFn: () =>
+      getCategoriesByLetterAndPage(selectedLetter, activePage, activePage),
+    initialData: categories,
+    staleTime: 0,
+    keepPreviousData: true,
+  });
 
-  const fetchCategoriesAndArticles = useCallback(async () => {
-    console.log("CALLED FCANDARTS");
-    setLoading(true);
-    const response = await fetch(
-      `/api/categories?letter=${selectedLetter}&pageFrom=${1}&pageTo=${5}`
-    );
-    if (response.status === 200) {
-      const data = await response.json();
+  const {
+    isLoadingCount,
+    isErrorCount,
+    data: categoryCountData,
+  } = useQuery({
+    queryKey: ["categoryCount", selectedLetter],
+    queryFn: () => getCategoryCount(selectedLetter),
+    staleTime: 0,
+  });
+
+  function fetchCategoriesAndArticles() {
+    console.log("DATA ", data);
+    if (!isError && !isLoading && data.length > 0) {
       const parsedData = parseResults(data);
 
-      setWindow({ start: 1, end: windowSize });
-      const split = splitResultsPerPage(parsedData);
-
-      setActiveSplit(split[activePage - 1]);
-      setSplitResults(split);
-      getCategoryCount();
-
-      setLoading(false);
+      return parsedData;
     } else {
-      console.log("500 STATUS ", response.status);
+      console.log("500 STATUS ", error);
+      return <p>Error loading data...</p>;
     }
-  }, [selectedLetter]);
+  }
+
+  useEffect(() => {
+    if (!isLoadingCount && !isErrorCount && categoryCountData) {
+      setPageTotal(categoryCountData / entriesPerPage);
+    }
+  }, [isLoadingCount, isErrorCount, categoryCountData]);
+
+  useEffect(() => {
+    const nextPage = activePage + 1;
+    queryClient.prefetchQuery({
+      queryKey: ["categories", selectedLetter, nextPage],
+      queryFn: () =>
+        getCategoriesByLetterAndPage(selectedLetter, nextPage, nextPage),
+    });
+  }, [activePage, queryClient]);
 
   function parseResults(data) {
     const parsedResults = data.map((entry) => {
@@ -56,132 +83,9 @@ export default function ResultsContainer({
     return parsedResults;
   }
 
-  //TODO Refactor
-
-  const getCategoryCount = useCallback(async () => {
-    const response = await fetch(`/api/categories/count/${selectedLetter}`);
-    if (response.status === 200) {
-      const categoryCount = await response.json();
-      setPageTotal(Math.floor(categoryCount / entriesPerPage));
-    } else {
-      console.log("500 STATUS ", response.status);
-    }
-  }, [selectedLetter, entriesPerPage]);
-
-  function calculateNewWindow(newActivePage) {
-    var end;
-    var start;
-
-    if (newActivePage === 1) {
-      start = 1;
-      end = 5;
-    } else {
-      start = newActivePage - Math.floor(windowSize / 2);
-      start = start === 0 ? 1 - start : start;
-    }
-    if (newActivePage === pageTotal) {
-      end = pageTotal;
-      start = pageTotal - (windowSize - 1);
-    } else {
-      end = newActivePage + Math.floor(windowSize / 2);
-      end = start + windowSize > end ? start + windowSize - 1 : end;
-    }
-    var newWindow = {
-      start: start,
-      end: end,
-    };
-
-    return newWindow;
-  }
-
   async function handlePageChange(newActivePage) {
     setActivePage(newActivePage);
-    if (activePage === newActivePage) {
-      return;
-    } else if (newActivePage >= window.start && newActivePage <= window.end) {
-      const slope = (5 - 1) / (window.end - window.start);
-      const mappedPos = 1 + slope * (newActivePage - window.start);
-      setActiveSplit(splitResults[mappedPos - 1]);
-      return;
-    }
-    setLoading(true);
-    const newWindow = calculateNewWindow(newActivePage);
-    var direction = activePage - newActivePage < 0 ? "up" : "down";
-
-    var keepSlices;
-    var fetchFrom;
-    var fetchTo;
-    if (direction === "up") {
-      var commonPages = newWindow.start - window.end;
-      if (commonPages <= 0) {
-        keepSlices = splitResults.slice(commonPages - 1);
-        commonPages = Math.abs(commonPages) + 1;
-        fetchFrom = newWindow.start + commonPages;
-        fetchTo = newWindow.end;
-      } else {
-        fetchFrom = newWindow.start;
-        fetchTo = newWindow.end;
-      }
-    } else if (direction === "down") {
-      var commonPages = newWindow.end - window.start;
-      if (commonPages >= 0) {
-        keepSlices = splitResults.slice(0, commonPages + 1);
-        fetchFrom = newWindow.start;
-        fetchTo = newWindow.end - (commonPages - 1);
-      } else {
-        fetchFrom = newWindow.start;
-        fetchTo = newWindow.end;
-      }
-    }
-
-    const response = await fetch(
-      `/api/categories?letter=${selectedLetter}&pageFrom=${fetchFrom}&pageTo=${fetchTo}`
-    );
-
-    if (response.status === 200) {
-      const newPages = await response.json();
-      console.log("NEW WINDOW :: ", newWindow);
-      console.log("NEW PAGES :: ", newPages);
-      const parsedResults = parseResults(newPages);
-      const split = splitResultsPerPage(parsedResults);
-
-      var newWindowPageSplits = keepSlices || [];
-      if (direction === "up") {
-        newWindowPageSplits = [...newWindowPageSplits, ...split];
-      } else if (direction === "down") {
-        newWindowPageSplits = [...split, ...newWindowPageSplits];
-      }
-
-      const slope = (5 - 1) / (newWindow.end - newWindow.start);
-      const mappedPos = 1 + slope * (newActivePage - newWindow.start);
-      setActiveSplit(newWindowPageSplits[mappedPos - 1]);
-      setSplitResults(newWindowPageSplits);
-      setLoading(false);
-    } else if (response.status === 500) {
-      console.log("500 STATUS ", response.status);
-    }
-
-    setWindow(newWindow);
   }
-
-  function splitResultsPerPage(data) {
-    const split = [];
-    for (let i = 0; i < data.length; i += entriesPerPage) {
-      split.push(data.slice(i, i + entriesPerPage));
-    }
-
-    return split;
-  }
-
-  useEffect(() => {
-    fetchCategoriesAndArticles("a");
-  }, []);
-
-  useEffect(() => {
-    fetchCategoriesAndArticles();
-    setActivePage(1);
-    setSplitResults([]);
-  }, [selectedLetter]);
 
   //TODO Add skeleton if no data
   return (
@@ -190,18 +94,20 @@ export default function ResultsContainer({
         <div className="flex flex-grow">
           <div className="flex flex-col w-1/2 h-full relative">
             <LoadingOverlay
-              visible={loading}
+              visible={isLoading}
               zIndex={1000}
               overlayProps={{ radius: "md", blur: 2 }}
             />
             <ScrollArea w={"100%"} h={"100%"} offsetScrollbars>
-              {activeSplit}
+              {!isLoading && data && fetchCategoriesAndArticles()}
             </ScrollArea>
-            <CategoryPagination
-              pageTotal={pageTotal}
-              activePage={activePage}
-              setActivePage={handlePageChange}
-            />
+            {!isLoadingCount && !isErrorCount && pageTotal > 0 && (
+              <CategoryPagination
+                pageTotal={pageTotal}
+                activePage={activePage}
+                setActivePage={handlePageChange}
+              />
+            )}
           </div>
           <div className="w-1/2 flex-1">
             <iframe
