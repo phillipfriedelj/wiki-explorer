@@ -48,7 +48,18 @@ export default function CategoryCard({ category, setSelectedLink }) {
         justify="space-between"
         rightSection={<IconChevronDown size={14} />}
         onClick={toggle}
-        radius={"0px"}
+        // radius={"0px"}
+        styles={{
+          root: {
+            transition: "all 1s ease-out;",
+            borderBottomRightRadius: `${
+              opened ? "0px" : "var(--mantine-radius-default)"
+            }`,
+            borderBottomLeftRadius: `${
+              opened ? "0px" : "var(--mantine-radius-default)"
+            }`,
+          },
+        }}
       >
         {category.title}
       </Button>

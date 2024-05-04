@@ -5,7 +5,7 @@ import LetterButtons from "./letter_buttons";
 import PageLayout from "@/layout/page_layout";
 import ResultsContainer from "./results_container";
 
-import SearchBar from "./search_barj";
+import SearchBar from "./search_bar";
 import { Group } from "@mantine/core";
 
 export default function CategoryVisualizer() {
@@ -26,7 +26,7 @@ export default function CategoryVisualizer() {
 
   return (
     <PageLayout subtitle={"Explore Wikipedia's categories"}>
-      <Group justify="start" gap="md" wrap="nowrap" px={"8px"}>
+      <Group justify="space-between" gap="md" wrap="nowrap" px={"8px"}>
         <SearchBar onSearch={handleSearch} />
         <LetterButtons handleClick={setSelectedLetter} />
       </Group>

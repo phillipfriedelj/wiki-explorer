@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { useDebouncedCallback } from "@mantine/hooks";
-import { TextInput, CloseButton, ActionIcon, Transition } from "@mantine/core";
+import {
+  TextInput,
+  CloseButton,
+  ActionIcon,
+  Transition,
+  Group,
+} from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
 
 export default function SearchBar({ onSearch }) {
@@ -25,7 +31,7 @@ export default function SearchBar({ onSearch }) {
   };
 
   return (
-    <>
+    <Group gap={"xs"} bg={"teal"}>
       <ActionIcon
         size="md"
         variant="filled"
@@ -53,9 +59,10 @@ export default function SearchBar({ onSearch }) {
                 // style={{ display: searchValue ? undefined : "none" }}
               />
             }
+            style={{ ...styles }}
           />
         )}
       </Transition>
-    </>
+    </Group>
   );
 }

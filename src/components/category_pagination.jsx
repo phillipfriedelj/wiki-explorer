@@ -6,14 +6,16 @@ export default function CategoryPagination({
   setActivePage,
 }) {
   return (
-    <Group justify="center" mt={8}>
+    <Group justify="center">
       <Pagination
         total={pageTotal}
-        size="sm"
+        size="xs"
         radius="xs"
         className="center"
         value={activePage}
         onChange={setActivePage}
+        withEdges
+        siblings={2}
       />
     </Group>
   );

@@ -6,6 +6,7 @@ import {
   Button,
   Group,
   Stack,
+  Title,
 } from "@mantine/core";
 import CategoryPagination from "./category_pagination";
 import { useEffect, useState } from "react";
@@ -90,20 +91,27 @@ export default function ResultsContainer({ selectedLetter, categories }) {
   return (
     <>
       <Flex
-        py={"8px"}
         w={"100%"}
         h={"100%"}
         mah={"100vh"}
         className="flex-1 overflow-y-auto"
+        // px={"5px"}
+        // py={"10px"}
+        // bg={
+        //   "light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6)"
+        // }
       >
         <Flex className="flex-grow">
-          <Stack w={"50%"} h={"100%"} className="relative">
+          <Stack w={"40%"} h={"100%"} className="relative" gap={"xs"}>
+            <Title order={3} size="h4" px={"8px"}>
+              Categories
+            </Title>
             <LoadingOverlay
               visible={isLoading}
               zIndex={1000}
               overlayProps={{ radius: "md", blur: 2 }}
             />
-            <ScrollArea w={"100%"} h={"100%"} offsetScrollbars>
+            <ScrollArea w={"100%"} h={"100%"} offsetScrollbars scrollbars="y">
               {!isLoading && fetchCategoriesAndArticles()}
             </ScrollArea>
             {!isLoadingCount && (
