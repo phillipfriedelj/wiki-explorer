@@ -1,4 +1,4 @@
-import { ActionIcon } from "@mantine/core";
+import { ActionIcon, Button, Text } from "@mantine/core";
 export default function LetterButton({
   letter,
   handleClick,
@@ -11,14 +11,14 @@ export default function LetterButton({
   }
 
   return (
-    <ActionIcon
-      variant="filled"
-      size="sm"
+    <Button
+      variant={active === letter ? "filled" : "light"}
+      size="compact-xs"
       key={letter}
-      color={active === letter ? "violet" : "gray"}
+      color={active === letter ? "blue" : "gray"}
       onClick={() => clickHandler(letter)}
     >
-      <span className="text-sm">{letter}</span>
-    </ActionIcon>
+      <Text size="xs">{letter}</Text>
+    </Button>
   );
 }
