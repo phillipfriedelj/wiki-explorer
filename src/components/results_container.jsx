@@ -1,13 +1,21 @@
 "use client";
-import { ScrollArea, LoadingOverlay } from "@mantine/core";
+import {
+  ScrollArea,
+  LoadingOverlay,
+  Flex,
+  Button,
+  Group,
+  Stack,
+} from "@mantine/core";
 import CategoryPagination from "./category_pagination";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import CategoryCard from "./category_card";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   getCategoriesByLetterAndPage,
   getCategoryCount,
 } from "@/queries/get-categories";
+import Iframe from "./iframe";
 
 export async function getStaticProps() {
   const categories = await getCategoriesByLetterAndPage("a", 1, 50);
@@ -43,7 +51,6 @@ export default function ResultsContainer({ selectedLetter, categories }) {
   });
 
   function fetchCategoriesAndArticles() {
-    console.log("DATA ", data);
     if (!isError && !isLoading && data.length > 0) {
       return data.map((entry) => {
         return (
@@ -79,41 +86,37 @@ export default function ResultsContainer({ selectedLetter, categories }) {
     setActivePage(1);
   }, selectedLetter);
 
-  async function handlePageChange(newActivePage) {
-    setActivePage(newActivePage);
-  }
-
   //TODO Add skeleton if no data
   return (
     <>
-      <div className="flex py-2 flex-1 overflow-y-auto w-full h-full max-h-screen">
-        <div className="flex flex-grow">
-          <div className="flex flex-col w-1/2 h-full relative">
+      <Flex
+        py={"8px"}
+        w={"100%"}
+        h={"100%"}
+        mah={"100vh"}
+        className="flex-1 overflow-y-auto"
+      >
+        <Flex className="flex-grow">
+          <Stack w={"50%"} h={"100%"} className="relative">
             <LoadingOverlay
               visible={isLoading}
               zIndex={1000}
               overlayProps={{ radius: "md", blur: 2 }}
             />
             <ScrollArea w={"100%"} h={"100%"} offsetScrollbars>
-              {!isLoading && data && fetchCategoriesAndArticles()}
+              {!isLoading && fetchCategoriesAndArticles()}
             </ScrollArea>
-            {!isLoadingCount && !isErrorCount && pageTotal > 0 && (
+            {!isLoadingCount && (
               <CategoryPagination
                 pageTotal={pageTotal}
                 activePage={activePage}
-                setActivePage={handlePageChange}
+                setActivePage={setActivePage}
               />
             )}
-          </div>
-          <div className="w-1/2 flex-1">
-            <iframe
-              src={selectedLink ? selectedLink : "https://en.wikipedia.org"}
-              height={"100%"}
-              width={"100%"}
-            />
-          </div>
-        </div>
-      </div>
+          </Stack>
+          <Iframe selectedLink={selectedLink} />
+        </Flex>
+      </Flex>
     </>
   );
 }

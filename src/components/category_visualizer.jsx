@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import LetterButtons from "./letter_buttons";
 import PageLayout from "@/layout/page_layout";
 import ResultsContainer from "./results_container";
 
 import SearchBar from "./search_barj";
+import { Group } from "@mantine/core";
 
 export default function CategoryVisualizer() {
   const [loading, setLoading] = useState(true);
@@ -25,10 +26,10 @@ export default function CategoryVisualizer() {
 
   return (
     <PageLayout subtitle={"Explore Wikipedia's categories"}>
-      <div className="flex items-center space-x-4 w-full">
+      <Group justify="start" gap="md" wrap="nowrap" px={"8px"}>
         <SearchBar onSearch={handleSearch} />
         <LetterButtons handleClick={setSelectedLetter} />
-      </div>
+      </Group>
       <ResultsContainer
         selectedLetter={selectedLetter}
         setLoading={setLoading}

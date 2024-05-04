@@ -1,11 +1,18 @@
+import { Stack, Title } from "@mantine/core";
 export default function PageLayout({ subtitle, children }) {
   return (
-    <div className="flex flex-col flex-grow h-full max-h-screen">
-      <div>
-        <h1>Wiki Explorer</h1>
-        <h2 className="text-md">{subtitle}</h2>
-      </div>
+    <Stack
+      h={"100vh"}
+      bg="var(--mantine-color-body)"
+      align="stretch"
+      justify="space-between"
+      gap="md"
+    >
+      <Stack px={"8px"}>
+        <Title order={1}>Wiki Explorer</Title>
+        <Title order={2}>{subtitle}</Title>
+      </Stack>
       {children}
-    </div>
+    </Stack>
   );
 }

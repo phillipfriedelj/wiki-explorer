@@ -1,5 +1,6 @@
 import LetterButton from "./letter_button";
 import { useState } from "react";
+import { Group } from "@mantine/core";
 
 export default function LetterButtons({ handleClick }) {
   const [buttonState, setButtonState] = useState("a");
@@ -31,6 +32,8 @@ export default function LetterButtons({ handleClick }) {
   }
 
   return (
-    <div className="flex space-x-2 py-2 shrink-0">{generateButtons()}</div>
+    <Group justify="space-between" gap="5" wrap="nowrap">
+      {generateButtons()}
+    </Group>
   );
 }

@@ -1,4 +1,12 @@
-import { Group, Box, Collapse, Stack, ScrollArea } from "@mantine/core";
+import {
+  Group,
+  Box,
+  Collapse,
+  Stack,
+  Button,
+  ScrollArea,
+  Card,
+} from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconChevronDown } from "@tabler/icons-react";
 
@@ -9,13 +17,18 @@ export default function CategoryCard({ category, setSelectedLink }) {
     var sorted = articles?.sort((entry) => entry.articles.first_letter);
     return sorted.map((entry) => {
       return (
-        <button
+        <Button
           key={entry.articles.title}
           onClick={() => handleArticleClick(entry.articles.title)}
-          className="text-xs bg-gray-300 rounded-md mr-10 pl-2 py-1 text-left hover:bg-gray-200"
+          variant="light"
+          color="blue"
+          size="xs"
+          fullWidth
+          justify="start"
+          my={"5px"}
         >
           {entry.articles.title}
-        </button>
+        </Button>
       );
     });
   }
@@ -28,31 +41,36 @@ export default function CategoryCard({ category, setSelectedLink }) {
 
   return (
     <Box w={"100%"} className="p-2">
-      <Group
+      <Button
+        variant="filled"
+        size="xs"
+        fullWidth
         justify="space-between"
-        wrap="nowrap"
-        className={`bg-gray-400 rounded-t-sm transition-all cursor-pointer ${
-          opened ? "" : "rounded-b-sm"
-        }`}
+        rightSection={<IconChevronDown size={14} />}
         onClick={toggle}
+        radius={"0px"}
       >
-        <p className="p-2 text-left text-sm font-bold text-black capitalize">
-          {category.title}
-        </p>
-        <button onClick={toggle} className="px-4">
-          <IconChevronDown />
-        </button>
-      </Group>
-
-      <Collapse
-        in={opened}
-        className="bg-gray-400 py-2 px-2 max-h-52 rounded-b-sm border-t-2 border-gray-300 overflow-y-auto"
-      >
-        <Stack align="stretch" justify="flex-start" gap="xs">
+        {category.title}
+      </Button>
+      <Collapse in={opened} className=" max-h-52 flex">
+        <ScrollArea.Autosize
+          mah={"200px"}
+          w={"100%"}
+          gap="xs"
+          styles={{
+            root: {
+              borderBottomLeftRadius: "var(--mantine-radius-default)",
+              borderBottomRightRadius: "var(--mantine-radius-default)",
+              border:
+                "0.5px solid light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-6)",
+            },
+            viewport: { padding: "2px 10px" },
+          }}
+        >
           {category &&
             category.categories_articles &&
             parseArticles(category.categories_articles)}
-        </Stack>
+        </ScrollArea.Autosize>
       </Collapse>
     </Box>
   );

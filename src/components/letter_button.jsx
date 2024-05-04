@@ -1,5 +1,4 @@
-"use client";
-import { useState, useEffect } from "react";
+import { ActionIcon } from "@mantine/core";
 export default function LetterButton({
   letter,
   handleClick,
@@ -12,14 +11,14 @@ export default function LetterButton({
   }
 
   return (
-    <button
+    <ActionIcon
+      variant="filled"
+      size="sm"
       key={letter}
-      className={`rounded-sm text-xs py-1 px-2 hover:scale-105 cursor-pointer ${
-        active === letter ? "bg-[#646cff]" : "bg-gray-500"
-      }`}
+      color={active === letter ? "violet" : "gray"}
       onClick={() => clickHandler(letter)}
     >
-      {letter}
-    </button>
+      <span className="text-sm">{letter}</span>
+    </ActionIcon>
   );
 }
