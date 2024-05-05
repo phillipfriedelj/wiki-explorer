@@ -31,14 +31,14 @@ export default function SearchBar({ onSearch }) {
   };
 
   return (
-    <Group gap={"xs"} bg={"teal"}>
+    <Group gap={"xs"}>
       <ActionIcon
-        size="md"
         variant="filled"
         aria-label="Settings"
         onClick={() => setOpen(true)}
+        radius={"sm"}
       >
-        <IconSearch style={{ width: 16, height: 16 }} stroke={1.5} />
+        <IconSearch style={{ width: 15, height: 15 }} />
       </ActionIcon>
       <Transition
         mounted={open}

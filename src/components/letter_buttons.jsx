@@ -1,15 +1,7 @@
-import LetterButton from "./letter_button";
-import { useState } from "react";
-import { Group, Button } from "@mantine/core";
+import { Select } from "@mantine/core";
+import { IconChevronDown } from "@tabler/icons-react";
 
-export default function LetterButtons({ handleClick }) {
-  const [buttonState, setButtonState] = useState("a");
-  var letters = generateLetters();
-
-  function activeButton(value) {
-    setButtonState(value);
-  }
-
+export default function LetterButtons({ selectedLetter, setSelectedLetter }) {
   function generateLetters() {
     const letters = [];
     for (let i = 0; i < 26; i++) {
@@ -19,21 +11,20 @@ export default function LetterButtons({ handleClick }) {
     return letters;
   }
 
-  function generateButtons() {
-    return letters.map((letter) => (
-      <LetterButton
-        key={letter}
-        letter={letter}
-        handleClick={handleClick}
-        active={buttonState}
-        onChange={activeButton}
-      />
-    ));
-  }
-
   return (
-    <Button.Group>{generateButtons()}</Button.Group>
-    // <Group justify="space-between" gap="5" wrap="nowrap">
-    // </Group>
+    <Select
+      size="xs"
+      placeholder="Pick value"
+      data={generateLetters()}
+      value={selectedLetter}
+      onChange={setSelectedLetter}
+      searchable
+      checkIconPosition="right"
+      w={"55px"}
+      comboboxProps={{
+        transitionProps: { transition: "fade-down", duration: 100 },
+      }}
+      rightSection={<IconChevronDown stroke={"1.5"}></IconChevronDown>}
+    />
   );
 }
