@@ -81,7 +81,7 @@ export default function ResultsContainer({ selectedLetter, categories }) {
       queryFn: () =>
         getCategoriesByLetterAndPage(selectedLetter, nextPage, entriesPerPage),
     });
-  }, [activePage, queryClient]);
+  }, [activePage, queryClient, selectedLetter]);
 
   useEffect(() => {
     setActivePage(1);
