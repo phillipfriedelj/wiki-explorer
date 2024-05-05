@@ -73,7 +73,7 @@ export default function CategoryCard({ category, setSelectedLink }) {
               borderBottomLeftRadius: "var(--mantine-radius-default)",
               borderBottomRightRadius: "var(--mantine-radius-default)",
               border:
-                "0.5px solid light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-6)",
+                "0.5px solid light-dark(var(--mantine-color-blue-1), var(--mantine-color-dark-6)",
             },
             viewport: { padding: "2px 10px" },
           }}

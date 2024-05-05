@@ -1,4 +1,7 @@
-import { Stack, Title } from "@mantine/core";
+import { Group, Stack, Title } from "@mantine/core";
+import animatedWikiLogo from "../assets/wiki-logo.gif";
+import wikiLogo from "../../public/wiki-logo.png";
+import Image from "next/image";
 export default function PageLayout({ subtitle, children }) {
   return (
     <Stack
@@ -8,14 +11,17 @@ export default function PageLayout({ subtitle, children }) {
       justify="space-between"
       gap="md"
     >
-      <Stack px={"8px"} gap={"1"}>
-        <Title order={1} size={"h2"} fw={700}>
-          Wiki Explorer
-        </Title>
-        <Title order={2} size={"h4"} fw={400}>
-          {subtitle}
-        </Title>
-      </Stack>
+      <Group px={"8px"} pt={"8px"}>
+        <Image src={wikiLogo} height={"45"} />
+        <Stack gap={"0"}>
+          <Title order={1} size={"h3"} fw={700}>
+            Wiki Explorer
+          </Title>
+          <Title order={2} size={"h6"} fw={400}>
+            {subtitle}
+          </Title>
+        </Stack>
+      </Group>
       {children}
     </Stack>
   );

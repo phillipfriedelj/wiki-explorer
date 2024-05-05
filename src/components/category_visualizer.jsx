@@ -14,7 +14,6 @@ export default function CategoryVisualizer() {
   const [searchResults, setSearchResults] = useState([]);
 
   async function handleSearch(searchValue) {
-    // const results = await fetch(`/api/search/${searchValue.replace(" ", "|")}`);
     const response = await fetch(`/api/search/${searchValue}`);
     if (response.status === 200) {
       const data = await response.json();

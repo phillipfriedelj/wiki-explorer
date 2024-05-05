@@ -95,15 +95,10 @@ export default function ResultsContainer({ selectedLetter, categories }) {
         h={"100%"}
         mah={"100vh"}
         className="flex-1 overflow-y-auto"
-        // px={"5px"}
-        // py={"10px"}
-        // bg={
-        //   "light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6)"
-        // }
       >
-        <Flex className="flex-grow">
+        <Flex className="flex-grow" py={"10px"}>
           <Stack w={"40%"} h={"100%"} className="relative" gap={"xs"}>
-            <Title order={3} size="h4" px={"8px"}>
+            <Title order={3} size="h5" px={"8px"}>
               Categories
             </Title>
             <LoadingOverlay

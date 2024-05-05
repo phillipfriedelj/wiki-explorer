@@ -15,7 +15,7 @@ export default function CategoryPagination({
         value={activePage}
         onChange={setActivePage}
         withEdges
-        siblings={2}
+        // siblings={2}
       />
     </Group>
   );
