@@ -85,7 +85,7 @@ export default function ResultsContainer({ selectedLetter, categories }) {
 
   useEffect(() => {
     setActivePage(1);
-  }, selectedLetter);
+  }, [selectedLetter]);
 
   //TODO Add skeleton if no data
   return (

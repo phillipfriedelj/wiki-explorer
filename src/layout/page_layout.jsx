@@ -12,7 +12,7 @@ export default function PageLayout({ subtitle, children }) {
       gap="md"
     >
       <Group px={"8px"} pt={"8px"}>
-        <Image src={wikiLogo} height={"45"} />
+        <Image src={wikiLogo} height={"45"} alt="wikipedia-logo" />
         <Stack gap={"0"}>
           <Title order={1} size={"h3"} fw={700}>
             Wiki Explorer
