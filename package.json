@@ -6,18 +6,29 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lint-force": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0 --fix"
   },
   "dependencies": {
-    "@prisma/client": "^5.12.1",
+    "@mantine/core": "^7.8.1",
+    "@mantine/hooks": "^7.8.1",
+    "@mantine/modals": "^7.8.1",
+    "@prisma/client": "^5.13.0",
+    "@tabler/icons-react": "^3.2.0",
+    "@tanstack/react-query": "^5.32.0",
+    "@tanstack/react-query-devtools": "^5.32.0",
     "next": "14.2.2",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-use-scroll-direction": "^0.1.0"
   },
   "devDependencies": {
     "eslint": "^8",
     "eslint-config-next": "14.2.2",
-    "postcss": "^8",
+    "eslint-config-prettier": "^9.1.0",
+    "postcss": "^8.4.38",
+    "postcss-preset-mantine": "^1.14.4",
+    "postcss-simple-vars": "^7.0.1",
     "prisma": "^5.12.1",
     "tailwindcss": "^3.4.1"
   }
