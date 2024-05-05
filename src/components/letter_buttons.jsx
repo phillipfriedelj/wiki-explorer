@@ -1,6 +1,6 @@
 import LetterButton from "./letter_button";
 import { useState } from "react";
-import { Group, Button } from "@mantine/core";
+import { Group, Button, FloatingIndicator } from "@mantine/core";
 
 export default function LetterButtons({ handleClick }) {
   const [buttonState, setButtonState] = useState("a");
@@ -31,9 +31,5 @@ export default function LetterButtons({ handleClick }) {
     ));
   }
 
-  return (
-    <Button.Group>{generateButtons()}</Button.Group>
-    // <Group justify="space-between" gap="5" wrap="nowrap">
-    // </Group>
-  );
+  return <Button.Group>{generateButtons()}</Button.Group>;
 }

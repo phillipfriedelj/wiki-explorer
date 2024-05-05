@@ -1,10 +1,13 @@
 import { Pagination, Group } from "@mantine/core";
+import { useMatches } from "@mantine/hooks";
 
 export default function CategoryPagination({
   pageTotal,
   activePage,
   setActivePage,
 }) {
+  // const siblings = useMatches()
+
   return (
     <Group justify="center">
       <Pagination
@@ -14,8 +17,8 @@ export default function CategoryPagination({
         className="center"
         value={activePage}
         onChange={setActivePage}
-        withEdges
-        siblings={2}
+        // withEdges
+        siblings={0}
       />
     </Group>
   );

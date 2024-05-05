@@ -40,7 +40,7 @@ export default function CategoryCard({ category, setSelectedLink }) {
   }
 
   return (
-    <Box w={"100%"} className="p-2">
+    <Box w={"100%"}>
       <Button
         variant="filled"
         size="xs"
@@ -63,7 +63,7 @@ export default function CategoryCard({ category, setSelectedLink }) {
       >
         {category.title}
       </Button>
-      <Collapse in={opened} className=" max-h-52 flex">
+      <Collapse in={opened} mah={"210px"}>
         <ScrollArea.Autosize
           mah={"200px"}
           w={"100%"}
