@@ -18,7 +18,6 @@ export default function LetterSelect({ selectedLetter, setSelectedLetter }) {
       data={generateLetters()}
       value={selectedLetter}
       onChange={setSelectedLetter}
-      searchable
       checkIconPosition="right"
       w={"55px"}
       comboboxProps={{

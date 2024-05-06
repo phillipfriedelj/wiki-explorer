@@ -8,8 +8,8 @@ export default function Navbar() {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
 
   return (
-    <Group px={"8px"} pt={"8px"} justify="space-between">
-      <Group>
+    <Group px={"8px"} pt={"8px"} justify="space-between" wrap="nowrap">
+      <Group wrap="nowrap">
         <Image src={wikiLogo} height={"30"} alt="wikipedia-logo" />
         <Stack gap={"0"}>
           <Title order={1} size={"1.25rem"} fw={700}>
@@ -20,7 +20,7 @@ export default function Navbar() {
           </Title>
         </Stack>
       </Group>
-      <Group>
+      <Group wrap="nowrap">
         <ActionIcon onClick={() => toggleColorScheme()}>
           {colorScheme === "light" ? (
             <IconSun></IconSun>

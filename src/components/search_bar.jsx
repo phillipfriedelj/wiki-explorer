@@ -31,10 +31,10 @@ export default function SearchBar({ onSearch }) {
   };
 
   return (
-    <Group gap={"xs"}>
+    <Group gap={"xs"} wrap="nowrap">
       <ActionIcon
         variant="filled"
-        aria-label="Settings"
+        aria-label="Search"
         onClick={() => setOpen(true)}
         radius={"sm"}
       >
@@ -56,7 +56,6 @@ export default function SearchBar({ onSearch }) {
               <CloseButton
                 aria-label="Clear input"
                 onClick={() => setOpen(false)}
-                // style={{ display: searchValue ? undefined : "none" }}
               />
             }
             style={{ ...styles }}

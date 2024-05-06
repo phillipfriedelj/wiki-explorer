@@ -10,11 +10,9 @@ export default function CategoryExplorer() {
   const [selectedLink, setSelectedLink] = useState("");
 
   return (
-    <PageLayout>
-      
-        <LateralMenu setSelectedLink={setSelectedLink} />
-        <Iframe selectedLink={selectedLink} />
-
-    </PageLayout>
+    <PageLayout
+      lateralMenu={<LateralMenu setSelectedLink={setSelectedLink} />}
+      mainContent={<Iframe selectedLink={selectedLink} />}
+    />
   );
 }

@@ -1,4 +1,5 @@
 import { Pagination, Group } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 
 export default function CategoryPagination({
   pageTotal,
@@ -6,7 +7,7 @@ export default function CategoryPagination({
   setActivePage,
 }) {
   return (
-    <Group justify="center">
+    <Group justify="center" wrap="nowrap">
       <Pagination
         total={pageTotal}
         size="xs"
@@ -14,8 +15,7 @@ export default function CategoryPagination({
         className="center"
         value={activePage}
         onChange={setActivePage}
-        withEdges
-        // siblings={2}
+        siblings={1}
       />
     </Group>
   );

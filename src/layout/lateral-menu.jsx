@@ -74,7 +74,7 @@ export default function LateralMenu({ setSelectedLink }) {
 
   function generateSkeleton() {
     return (
-      <Box w={"100%"} className="p-2">
+      <Box miw={"265px"} w={"265px"} className="p-2">
         {Array(15)
           .fill(0)
           .map((_, index) => (
@@ -110,12 +110,12 @@ export default function LateralMenu({ setSelectedLink }) {
   }, [selectedLetter]);
 
   return (
-    <Stack w={"40%"} h={"100%"} className="relative" gap={"xs"}>
-      <Group justify="space-between" gap="md" wrap="nowrap" px={"8px"}>
-        <Title order={3} size="h5" px={"8px"}>
+    <Stack h={"100%"} gap={"xs"} wrap="nowrap">
+      <Group justify="space-between" gap="md" wrap="nowrap">
+        <Title order={3} size="h5">
           Categories
         </Title>
-        <Group gap={"xs"}>
+        <Group gap={"xs"} wrap="nowrap">
           <SearchBar onSearch={handleSearch} />
           <LetterSelect
             selectedLetter={selectedLetter}
@@ -123,7 +123,7 @@ export default function LateralMenu({ setSelectedLink }) {
           />
         </Group>
       </Group>
-      <ScrollArea w={"100%"} h={"100%"} offsetScrollbars scrollbars="y">
+      <ScrollArea offsetScrollbars scrollbars="y" className="flex">
         <LoadingOverlay
           visible={isLoading}
           zIndex={1000}
