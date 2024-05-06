@@ -1,7 +1,7 @@
 import { Select } from "@mantine/core";
 import { IconChevronDown } from "@tabler/icons-react";
 
-export default function LetterButtons({ selectedLetter, setSelectedLetter }) {
+export default function LetterSelect({ selectedLetter, setSelectedLetter }) {
   function generateLetters() {
     const letters = [];
     for (let i = 0; i < 26; i++) {
