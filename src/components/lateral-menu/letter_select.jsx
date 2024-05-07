@@ -19,7 +19,7 @@ export default function LetterSelect({ selectedLetter, setSelectedLetter }) {
       value={selectedLetter}
       onChange={setSelectedLetter}
       checkIconPosition="right"
-      w={"55px"}
+      maw={"55px"}
       comboboxProps={{
         transitionProps: { transition: "fade-down", duration: 100 },
       }}

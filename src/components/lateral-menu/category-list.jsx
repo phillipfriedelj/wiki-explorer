@@ -41,7 +41,7 @@ export default function CategoryList({ data, isLoading, setSelectedLink }) {
 
   function generateSkeleton() {
     return (
-      <Box miw={"265px"} w={"265px"} className="p-2">
+      <Box miw={"300px"} w={"300px"} className="p-2">
         {Array(15)
           .fill(0)
           .map((_, index) => (

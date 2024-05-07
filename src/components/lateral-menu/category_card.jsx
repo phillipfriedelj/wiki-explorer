@@ -59,8 +59,8 @@ export default function CategoryCard({ category, setSelectedLink }) {
       gap="0px"
       direction="column"
       wrap="nowrap"
-      maw={"265px"}
-      w={"265px"}
+      maw={"300px"}
+      w={"300px"}
     >
       <Button
         variant="filled"
