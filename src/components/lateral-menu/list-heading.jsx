@@ -1,5 +1,5 @@
 import { Group, Title } from "@mantine/core";
-import SearchBar from "./search_bar";
+import SearchBar from "./search-bar";
 import LetterSelect from "./letter_select";
 
 export default function ListHeading({
