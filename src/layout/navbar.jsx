@@ -17,7 +17,7 @@ export default function Navbar() {
               Wiki Explorer
             </Title>
             <Title order={2} size={"0.75rem"} fw={400} mt={"-3px"}>
-              Explore Wikipedia's categories
+              Explore Wikipedia&apos;s categories
             </Title>
           </Stack>
         </Group>
