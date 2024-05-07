@@ -1,4 +1,4 @@
-import CategoryExplorer from "@/components/category_explorer";
+import CategoryExplorer from "@/pages/category_explorer";
 
 export default function Home() {
   return (
