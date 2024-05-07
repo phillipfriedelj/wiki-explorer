@@ -1,4 +1,4 @@
-import { Stack, Group, Transition, ActionIcon } from "@mantine/core";
+import { Stack, Group, Transition, ActionIcon, em } from "@mantine/core";
 import CategoryPagination from "../components/lateral-menu/category_pagination";
 import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -10,6 +10,7 @@ import { getSearchResults } from "@/queries/get-search-results";
 import CategoryList from "@/components/lateral-menu/category-list";
 import ListHeading from "@/components/lateral-menu/list-heading";
 import { IconCaretLeftRight } from "@tabler/icons-react";
+import { useMediaQuery } from "@mantine/hooks";
 
 export default function LateralMenu({ setSelectedLink }) {
   const entriesPerPage = 50;
@@ -18,6 +19,7 @@ export default function LateralMenu({ setSelectedLink }) {
   const [searchValue, setSearchValue] = useState("");
   const [collapsed, setCollapsed] = useState(false);
   const queryClient = useQueryClient();
+  const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
 
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ["categories", selectedLetter, activePage],
@@ -62,6 +64,14 @@ export default function LateralMenu({ setSelectedLink }) {
   useEffect(() => {
     setActivePage(1);
   }, [selectedLetter]);
+
+  useEffect(() => {
+    var initialSet = false;
+    if (isMobile && !initialSet) {
+      initialSet = true;
+      setCollapsed(false);
+    }
+  }, [isMobile]);
 
   return (
     <Group wrap="nowrap" h={"100%"} gap={"xs"} preventGrowOverflow>
