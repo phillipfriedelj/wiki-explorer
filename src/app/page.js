@@ -1,9 +1,5 @@
-import CategoryVisualizer from "@/components/category_visualizer";
+import CategoryExplorer from "@/pages/category_explorer";
 
 export default function Home() {
-  return (
-    <main className="flex flex-col flex-grow h-full min-h-screen">
-      <CategoryVisualizer />
-    </main>
-  );
+  return <CategoryExplorer />;
 }

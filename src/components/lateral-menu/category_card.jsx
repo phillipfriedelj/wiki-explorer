@@ -1,11 +1,11 @@
 import {
-  Group,
-  Box,
-  Collapse,
   Stack,
+  Collapse,
   Button,
+  Text,
+  rem,
   ScrollArea,
-  Card,
+  Flex,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconChevronDown } from "@tabler/icons-react";
@@ -15,22 +15,34 @@ export default function CategoryCard({ category, setSelectedLink }) {
 
   function parseArticles(articles) {
     var sorted = articles?.sort((entry) => entry.articles.first_letter);
-    return sorted.map((entry) => {
-      return (
-        <Button
-          key={entry.articles.title}
-          onClick={() => handleArticleClick(entry.articles.title)}
-          variant="light"
-          color="blue"
-          size="xs"
-          fullWidth
-          justify="start"
-          my={"5px"}
-        >
-          {entry.articles.title}
-        </Button>
-      );
-    });
+    return (
+      <Stack
+        align="stretch"
+        justify="flex-start"
+        gap="0px"
+        px={"5px"}
+        py={"2px"}
+        maw={"255px"}
+      >
+        {sorted.map((entry) => {
+          return (
+            <Button
+              key={entry.articles.title}
+              onClick={() => handleArticleClick(entry.articles.title)}
+              variant="light"
+              color="blue"
+              size="xs"
+              justify="start"
+              my={"2px"}
+            >
+              <Text size={rem(10)} fw={300} truncate="end">
+                {entry.articles.title}
+              </Text>
+            </Button>
+          );
+        })}
+      </Stack>
+    );
   }
 
   function handleArticleClick(clickedArticle) {
@@ -40,15 +52,22 @@ export default function CategoryCard({ category, setSelectedLink }) {
   }
 
   return (
-    <Box w={"100%"} className="p-2">
+    <Flex
+      py={rem("8px")}
+      align="stretch"
+      justify="flex-start"
+      gap="0px"
+      direction="column"
+      wrap="nowrap"
+      maw={"300px"}
+      w={"300px"}
+    >
       <Button
         variant="filled"
         size="xs"
-        fullWidth
         justify="space-between"
         rightSection={<IconChevronDown size={14} />}
         onClick={toggle}
-        // radius={"0px"}
         styles={{
           root: {
             transition: "all 1s ease-out;",
@@ -61,13 +80,13 @@ export default function CategoryCard({ category, setSelectedLink }) {
           },
         }}
       >
-        {category.title}
+        <Text size={rem(12)} fw={500} truncate="end">
+          {category.title}
+        </Text>
       </Button>
-      <Collapse in={opened} className=" max-h-52 flex">
+      <Collapse in={opened} mah={"200px"}>
         <ScrollArea.Autosize
           mah={"200px"}
-          w={"100%"}
-          gap="xs"
           styles={{
             root: {
               borderBottomLeftRadius: "var(--mantine-radius-default)",
@@ -75,7 +94,6 @@ export default function CategoryCard({ category, setSelectedLink }) {
               border:
                 "0.5px solid light-dark(var(--mantine-color-blue-1), var(--mantine-color-dark-6)",
             },
-            viewport: { padding: "2px 10px" },
           }}
         >
           {category &&
@@ -83,6 +101,6 @@ export default function CategoryCard({ category, setSelectedLink }) {
             parseArticles(category.categories_articles)}
         </ScrollArea.Autosize>
       </Collapse>
-    </Box>
+    </Flex>
   );
 }
