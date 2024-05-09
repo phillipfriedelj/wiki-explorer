@@ -13,7 +13,6 @@ export default function ListHeading({
         Categories
       </Title>
       <Group gap={"xs"} wrap="nowrap">
-        <SearchBar onSearch={handleSearch} />
         <LetterSelect
           selectedLetter={selectedLetter}
           setSelectedLetter={setSelectedLetter}

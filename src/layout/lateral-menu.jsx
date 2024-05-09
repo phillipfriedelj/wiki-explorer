@@ -35,22 +35,7 @@ export default function LateralMenu({ setSelectedLink }) {
     staleTime: 0,
   });
 
-  const { isFetching: isFetchingSearchResults, data: searchResults } = useQuery(
-    {
-      queryKey: ["search", searchValue],
-      queryFn: () => getSearchResults(),
-      staleTime: 0,
-      keepPreviousData: true,
-    }
-  );
-
-  async function handleSearch(searchValue) {
-    console.log("SV :: ", searchValue);
-    // setSearchValue(searchValue);
-
-    //   const searchResults = await getSearchResults(searchValue);
-    //   console.log("SR :: ", searchResults);
-  }
+  async function handleSearch(searchValue) {}
 
   useEffect(() => {
     const nextPage = activePage + 1;
