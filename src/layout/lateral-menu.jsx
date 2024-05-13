@@ -58,7 +58,7 @@ export default function LateralMenu({ setSelectedLink }) {
     var initialSet = false;
     if (isMobile && !initialSet) {
       initialSet = true;
-      setCollapsed(false);
+      setCollapsed(true);
     }
   }, [isMobile]);
 
@@ -131,19 +131,34 @@ export default function LateralMenu({ setSelectedLink }) {
     }
   }
 
+  useEffect(() => {
+    setActivePage(1);
+  }, [selectedLetter]);
+
   return (
-    <Group wrap="nowrap" h={"100%"} gap={"xs"} preventGrowOverflow>
+    <Group
+      wrap="nowrap"
+      h={"100%"}
+      gap={"xs"}
+      preventGrowOverflow
+      styles={{
+        root: {
+          backgroundColor: "var(--mantine-color-body)",
+        },
+      }}
+    >
       <ActionIcon
         onClick={() => setCollapsed(!collapsed)}
-        size={"input-xs"}
-        className="justify-self-start self-start place-self-start"
+        size={"xs"}
+        h={"100%"}
+        className="place-self-start"
       >
         <IconCaretLeftRight style={{ width: "70%", height: "70%" }} />
       </ActionIcon>
       <Transition
         mounted={!collapsed}
         transition="fade"
-        duration={150}
+        duration={15}
         timingFunction="ease-in-out"
       >
         {(styles) => (
