@@ -4,27 +4,20 @@ export default async function handler(req, res) {
   const prisma = new PrismaClient();
   const { term } = req.query;
 
-  // async function getMatchingCategories() {
-  //   console.log("TERM -- ", term);
-  //   const matchingCategories = await prisma.categories.findMany({
-  //     take: 20,
-  //     where: {
-  //       title: {
-  //         search: term,
-  //       },
-  //     },
-  //   });
-  //   console.log("MATCHING CATS ---- ", matchingCategories);
-  //   return matchingCategories;
-  // }
-
   async function searchCategoriesByTitle() {
     try {
       const categories = await prisma.categories.findMany({
         take: 20,
         where: {
           title: {
-            startsWith: term.toLowerCase(), // Using startsWith for LIKE 'vene%'
+            contains: term.toLowerCase(), // Using startsWith for LIKE 'vene%'
+          },
+        },
+        include: {
+          categories_articles: {
+            include: {
+              articles: true,
+            },
           },
         },
       });

@@ -1,4 +1,12 @@
-import { Stack, Group, Transition, ActionIcon, em } from "@mantine/core";
+import {
+  Stack,
+  Group,
+  Transition,
+  ActionIcon,
+  em,
+  Divider,
+  Text,
+} from "@mantine/core";
 import CategoryPagination from "../components/lateral-menu/category_pagination";
 import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -21,7 +29,7 @@ export default function LateralMenu({ setSelectedLink }) {
   const queryClient = useQueryClient();
   const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
 
-  const { isLoading, isError, data, error } = useQuery({
+  const { isLoading, data } = useQuery({
     queryKey: ["categories", selectedLetter, activePage],
     queryFn: () =>
       getCategoriesByLetterAndPage(selectedLetter, activePage, entriesPerPage),
@@ -35,7 +43,10 @@ export default function LateralMenu({ setSelectedLink }) {
     staleTime: 0,
   });
 
-  async function handleSearch(searchValue) {}
+  const { isLoading: isLoadingSearch, data: searchResults } = useQuery({
+    queryKey: ["search", searchValue],
+    queryFn: () => getSearchResults(searchValue),
+  });
 
   useEffect(() => {
     const nextPage = activePage + 1;
@@ -58,6 +69,55 @@ export default function LateralMenu({ setSelectedLink }) {
     }
   }, [isMobile]);
 
+  useEffect(() => {
+    console.log("SR :: ", searchResults);
+  }, [searchResults]);
+
+  function displayResultsList() {
+    if (searchValue && searchValue !== "") {
+      console.log("SEARCHING");
+      if (!isLoadingSearch && searchResults.length === 0) {
+        return <Text>No matching results found...</Text>;
+      } else {
+        return (
+          <CategoryList
+            data={searchResults}
+            isLoading={isLoadingSearch}
+            setSelectedLink={setSelectedLink}
+          />
+        );
+      }
+    } else {
+      console.log("NORMAL");
+      return (
+        <CategoryList
+          data={data}
+          isLoading={isLoading}
+          setSelectedLink={setSelectedLink}
+        />
+      );
+    }
+  }
+
+  function getPageNumber() {
+    console.log("SR ------ ", searchResults);
+    if (searchResults && searchResults.length > 0) {
+      if (!isLoadingSearch && searchResults.length === 0) {
+        return 0;
+      } else {
+        return searchResults.length / entriesPerPage;
+      }
+    } else {
+      return categoryCount / entriesPerPage;
+    }
+
+    // else if (categoryCount && categoryCount > 0) {
+    //   return categoryCount / entriesPerPage;
+    // } else {
+    //   return 0;
+    // }
+  }
+
   return (
     <Group wrap="nowrap" h={"100%"} gap={"xs"} preventGrowOverflow>
       <ActionIcon
@@ -68,7 +128,7 @@ export default function LateralMenu({ setSelectedLink }) {
         <IconCaretLeftRight style={{ width: "70%", height: "70%" }} />
       </ActionIcon>
       <Transition
-        mounted={collapsed}
+        mounted={!collapsed}
         transition="fade"
         duration={150}
         timingFunction="ease-in-out"
@@ -78,17 +138,14 @@ export default function LateralMenu({ setSelectedLink }) {
             <ListHeading
               selectedLetter={selectedLetter}
               setSelectedLetter={setSelectedLetter}
-              handleSearch={handleSearch}
+              handleSearch={setSearchValue}
               setCollapsed={setCollapsed}
             />
-            <CategoryList
-              data={data}
-              isLoading={isLoading}
-              setSelectedLink={setSelectedLink}
-            />
+            <Divider />
+            {displayResultsList()}
             {!isLoadingCount && (
               <CategoryPagination
-                pageTotal={categoryCount / entriesPerPage}
+                pageTotal={getPageNumber()}
                 activePage={activePage}
                 setActivePage={setActivePage}
               />

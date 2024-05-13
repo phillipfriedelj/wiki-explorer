@@ -12,33 +12,6 @@ export default function CategoryList({ data, isLoading, setSelectedLink }) {
     ));
   }
 
-  //   function     () {
-  //     if (isFetchingSearchResults && searchResults) {
-  //       return searchResults.map((entry) => {
-  //         return (
-  //           <CategoryCard
-  //             key={entry.title}
-  //             category={entry}
-  //             setSelectedLink={setSelectedLink}
-  //           />
-  //         );
-  //       });
-  //     } else if (!isError && !isLoading && data.length > 0) {
-  //       return data.map((entry) => {
-  //         return (
-  //           <CategoryCard
-  //             key={entry.title}
-  //             category={entry}
-  //             setSelectedLink={setSelectedLink}
-  //           />
-  //         );
-  //       });
-  //     } else {
-  //       console.log("500 STATUS ", error);
-  //       return <p>Error loading data...</p>;
-  //     }
-  //   }
-
   function generateSkeleton() {
     return (
       <Box miw={"300px"} w={"300px"} className="p-2">
