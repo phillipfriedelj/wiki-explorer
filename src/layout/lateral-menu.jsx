@@ -54,10 +54,6 @@ export default function LateralMenu({ setSelectedLink }) {
   );
   usePrefetchSearchResults(searchValue, activePage, entriesPerPage);
 
-  // useEffect(() => {
-  //   setActivePage(1);
-  // }, [selectedLetter]);
-
   useEffect(() => {
     var initialSet = false;
     if (isMobile && !initialSet) {
@@ -92,8 +88,14 @@ export default function LateralMenu({ setSelectedLink }) {
     }
   }
 
+  function handleSearch(newSearchValue) {
+    if (newSearchValue === "") {
+      setSearchActivePage(1);
+    }
+    setSearchValue(newSearchValue);
+  }
+
   function getPageNumber() {
-    console.log("SR ------ ", searchResults);
     if (searchResults && searchResults.length > 0) {
       if (!isLoadingSearch && searchResults.length === 0) {
         return 0;
@@ -103,12 +105,30 @@ export default function LateralMenu({ setSelectedLink }) {
     } else {
       return categoryCount / entriesPerPage;
     }
+  }
 
-    // else if (categoryCount && categoryCount > 0) {
-    //   return categoryCount / entriesPerPage;
-    // } else {
-    //   return 0;
-    // }
+  function getActivePage() {
+    if (searchResults && searchResults.length > 0) {
+      if (!isLoadingSearch && searchResults.length === 0) {
+        return activePage;
+      } else {
+        return searchActivePage;
+      }
+    } else {
+      return activePage;
+    }
+  }
+
+  function getActivePageSetter() {
+    if (searchResults && searchResults.length > 0) {
+      if (!isLoadingSearch && searchResults.length === 0) {
+        return setActivePage;
+      } else {
+        return setSearchActivePage;
+      }
+    } else {
+      return setActivePage;
+    }
   }
 
   return (
@@ -131,7 +151,7 @@ export default function LateralMenu({ setSelectedLink }) {
             <ListHeading
               selectedLetter={selectedLetter}
               setSelectedLetter={setSelectedLetter}
-              handleSearch={setSearchValue}
+              handleSearch={handleSearch}
               setCollapsed={setCollapsed}
             />
             <Divider />
@@ -139,8 +159,8 @@ export default function LateralMenu({ setSelectedLink }) {
             {!isLoadingCount && (
               <CategoryPagination
                 pageTotal={getPageNumber()}
-                activePage={activePage}
-                setActivePage={setActivePage}
+                activePage={getActivePage()}
+                setActivePage={getActivePageSetter()}
               />
             )}
           </Stack>
