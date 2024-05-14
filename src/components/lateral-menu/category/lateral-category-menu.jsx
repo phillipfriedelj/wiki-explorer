@@ -47,9 +47,10 @@ export default function LateralCategoryMenu({
 
   function handleLateralIconClick(clickedIcon) {
     if (clickedIcon === "category") {
-      setCollapsed(true);
+      setCollapsed(!collapsed);
       setDisplayedMenu("category");
     } else {
+      setCollapsed(false);
       setDisplayedMenu("search");
     }
   }
