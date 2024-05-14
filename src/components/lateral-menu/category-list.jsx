@@ -34,7 +34,9 @@ export default function CategoryList({ data, isLoading, setSelectedLink }) {
     if (!isLoading && (!data || data.length === 0)) {
       return (
         <>
-          <Text h={"100%"}>No results found...</Text>
+          <Text miw={"300px"} w={"300px"} h={"100%"}>
+            No results found...
+          </Text>
         </>
       );
     } else if (isLoading) {

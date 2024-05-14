@@ -1,10 +1,20 @@
-import { Group, Transition, Stack, ActionIcon, Divider } from "@mantine/core";
+import {
+  Group,
+  Transition,
+  Stack,
+  ActionIcon,
+  Divider,
+  em,
+} from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import { IconCategory, IconSearch } from "@tabler/icons-react";
 export default function LateralMenu({
   collapsed,
   children,
   handleLateralIconClick,
 }) {
+  const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
+
   return (
     <Group
       wrap="nowrap"
@@ -16,6 +26,7 @@ export default function LateralMenu({
           backgroundColor: "var(--mantine-color-body)",
         },
       }}
+      className="relative"
     >
       <Stack justify={"flex-start"} align="center" h={"100%"}>
         <ActionIcon
@@ -41,9 +52,18 @@ export default function LateralMenu({
         timingFunction="ease-in-out"
       >
         {(styles) => (
-          <Stack h={"100%"} gap={"xs"} wrap="nowrap" style={styles}>
+          <div
+            className={`gap-2  flex flex-col flex-nowrap h-full ${
+              isMobile ? "absolute" : "inline"
+            }`}
+            style={{
+              ...styles,
+              backgroundColor: "var(--mantine-color-body)",
+              left: "calc(100% + 10px)",
+            }}
+          >
             {children}
-          </Stack>
+          </div>
         )}
       </Transition>
     </Group>
