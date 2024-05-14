@@ -24,13 +24,17 @@ export default function Navbar() {
         <Group wrap="nowrap">
           <ActionIcon onClick={() => toggleColorScheme()}>
             {colorScheme === "light" ? (
-              <IconSun></IconSun>
+              <IconSun style={{ width: "70%", height: "70%" }}></IconSun>
             ) : (
-              <IconMoonStars></IconMoonStars>
+              <IconMoonStars
+                style={{ width: "70%", height: "70%" }}
+              ></IconMoonStars>
             )}
           </ActionIcon>
           <ActionIcon>
-            <IconBrandGithub></IconBrandGithub>
+            <IconBrandGithub
+              style={{ width: "70%", height: "70%" }}
+            ></IconBrandGithub>
           </ActionIcon>
         </Group>
       </Group>

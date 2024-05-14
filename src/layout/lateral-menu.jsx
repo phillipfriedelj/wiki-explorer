@@ -31,14 +31,14 @@ export default function LateralMenu({
       <Stack justify={"flex-start"} align="center" h={"100%"}>
         <ActionIcon
           onClick={() => handleLateralIconClick("category")}
-          size={"xs"}
+          // size={"sm"}
           className="place-self-start"
         >
           <IconCategory style={{ width: "70%", height: "70%" }} />
         </ActionIcon>
         <ActionIcon
           onClick={() => handleLateralIconClick("search")}
-          size={"xs"}
+          // size={"sm"}
           className="place-self-start"
         >
           <IconSearch style={{ width: "70%", height: "70%" }} />
