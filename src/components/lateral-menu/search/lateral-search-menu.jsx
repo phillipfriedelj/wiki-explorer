@@ -1,17 +1,11 @@
 import SearchListHeading from "./search-list-heading";
-import {
-  Stack,
-  Group,
-  Transition,
-  ActionIcon,
-  em,
-  Divider,
-} from "@mantine/core";
+import { em } from "@mantine/core";
 import ListPagination from "../list-pagination";
 import { useEffect, useState } from "react";
 import CategoryList from "@/components/lateral-menu/category-list";
-import { IconCaretLeftRight } from "@tabler/icons-react";
 import { useMediaQuery } from "@mantine/hooks";
+
+import LateralMenu from "@/layout/lateral-menu";
 
 import {
   useFetchSearchResults,
@@ -20,8 +14,8 @@ import {
 } from "../../../hooks/search-hooks";
 export default function LateralSearchMenu({
   setSelectedLink,
-  setDisplayedMenu,
   setCollapsed,
+  setDisplayedMenu,
   collapsed,
 }) {
   const entriesPerPage = 50;
@@ -56,54 +50,36 @@ export default function LateralSearchMenu({
     setSearchValue(newSearchValue);
   }
 
+  function handleLateralIconClick(clickedIcon) {
+    if (clickedIcon === "search") {
+      setCollapsed(true);
+      setDisplayedMenu("search");
+    } else {
+      setDisplayedMenu("category");
+    }
+  }
+
   return (
-    <Group
-      wrap="nowrap"
-      h={"100%"}
-      gap={"xs"}
-      preventGrowOverflow
-      styles={{
-        root: {
-          backgroundColor: "var(--mantine-color-body)",
-        },
-      }}
+    <LateralMenu
+      collapsed={collapsed}
+      handleLateralIconClick={handleLateralIconClick}
     >
-      <ActionIcon
-        onClick={() => setCollapsed(!collapsed)}
-        size={"xs"}
-        h={"100%"}
-        className="place-self-start"
-      >
-        <IconCaretLeftRight style={{ width: "70%", height: "70%" }} />
-      </ActionIcon>
-      <Transition
-        mounted={!collapsed}
-        transition="fade"
-        duration={15}
-        timingFunction="ease-in-out"
-      >
-        {(styles) => (
-          <Stack h={"100%"} gap={"xs"} wrap="nowrap" style={styles}>
-            <SearchListHeading
-              setCollapsed={setCollapsed}
-              handleSearch={handleSearch}
-            />
-            <Divider />
-            <CategoryList
-              data={searchResults}
-              isLoading={isLoadingSearch}
-              setSelectedLink={setSelectedLink}
-            />
-            {!isLoadingSearchCount && (
-              <ListPagination
-                pageTotal={searchCount / entriesPerPage}
-                activePage={activePage}
-                setActivePage={setActivePage}
-              />
-            )}
-          </Stack>
-        )}
-      </Transition>
-    </Group>
+      <SearchListHeading
+        setCollapsed={setCollapsed}
+        handleSearch={handleSearch}
+      />
+      <CategoryList
+        data={searchResults}
+        isLoading={isLoadingSearch}
+        setSelectedLink={setSelectedLink}
+      />
+      {!isLoadingSearchCount && (
+        <ListPagination
+          pageTotal={searchCount / entriesPerPage}
+          activePage={activePage}
+          setActivePage={setActivePage}
+        />
+      )}
+    </LateralMenu>
   );
 }

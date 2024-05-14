@@ -1,17 +1,10 @@
-import {
-  Stack,
-  Group,
-  Transition,
-  ActionIcon,
-  em,
-  Divider,
-} from "@mantine/core";
+import { em } from "@mantine/core";
 import ListPagination from "../list-pagination";
 import { useEffect, useState } from "react";
 import CategoryList from "@/components/lateral-menu/category-list";
 import CategoryListHeading from "./category-list-heading";
-import { IconCaretLeftRight } from "@tabler/icons-react";
 import { useMediaQuery } from "@mantine/hooks";
+import LateralMenu from "@/layout/lateral-menu";
 
 import {
   useFetchCategories,
@@ -52,56 +45,38 @@ export default function LateralCategoryMenu({
     setActivePage(1);
   }, [selectedLetter]);
 
+  function handleLateralIconClick(clickedIcon) {
+    if (clickedIcon === "category") {
+      setCollapsed(true);
+      setDisplayedMenu("category");
+    } else {
+      setDisplayedMenu("search");
+    }
+  }
+
   return (
-    <Group
-      wrap="nowrap"
-      h={"100%"}
-      gap={"xs"}
-      preventGrowOverflow
-      styles={{
-        root: {
-          backgroundColor: "var(--mantine-color-body)",
-        },
-      }}
+    <LateralMenu
+      collapsed={collapsed}
+      handleLateralIconClick={handleLateralIconClick}
     >
-      <ActionIcon
-        onClick={() => setCollapsed(!collapsed)}
-        size={"xs"}
-        h={"100%"}
-        className="place-self-start"
-      >
-        <IconCaretLeftRight style={{ width: "70%", height: "70%" }} />
-      </ActionIcon>
-      <Transition
-        mounted={!collapsed}
-        transition="fade"
-        duration={15}
-        timingFunction="ease-in-out"
-      >
-        {(styles) => (
-          <Stack h={"100%"} gap={"xs"} wrap="nowrap" style={styles}>
-            <CategoryListHeading
-              selectedLetter={selectedLetter}
-              setSelectedLetter={setSelectedLetter}
-              setDisplayedMenu={setDisplayedMenu}
-              setCollapsed={setCollapsed}
-            />
-            <Divider />
-            <CategoryList
-              data={data}
-              isLoading={isLoading}
-              setSelectedLink={setSelectedLink}
-            />
-            {!isLoadingCount && (
-              <ListPagination
-                pageTotal={categoryCount / entriesPerPage}
-                activePage={activePage}
-                setActivePage={setActivePage}
-              />
-            )}
-          </Stack>
-        )}
-      </Transition>
-    </Group>
+      <CategoryListHeading
+        selectedLetter={selectedLetter}
+        setSelectedLetter={setSelectedLetter}
+        setDisplayedMenu={setDisplayedMenu}
+        setCollapsed={setCollapsed}
+      />
+      <CategoryList
+        data={data}
+        isLoading={isLoading}
+        setSelectedLink={setSelectedLink}
+      />
+      {!isLoadingCount && (
+        <ListPagination
+          pageTotal={categoryCount / entriesPerPage}
+          activePage={activePage}
+          setActivePage={setActivePage}
+        />
+      )}
+    </LateralMenu>
   );
 }
