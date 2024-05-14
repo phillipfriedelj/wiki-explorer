@@ -1,6 +1,9 @@
 async function getSearchResults(searchValue, page, amount) {
+  if (!searchValue || searchValue.trim() === "") {
+    return null;
+  }
   const response = await fetch(
-    `/api/search?term=${searchValue}&page=${page}&amount=${amount}`
+    `/api/search?term=${searchValue.trim()}&page=${page}&amount=${amount}`
   );
 
   if (response.status === 500) {
@@ -11,7 +14,11 @@ async function getSearchResults(searchValue, page, amount) {
 }
 
 async function getSearchResultsCount(searchValue) {
-  const response = await fetch(`/api/search?term=${searchValue}`);
+  if (!searchValue || searchValue.trim() === "") {
+    return null;
+  }
+
+  const response = await fetch(`/api/search?term=${searchValue.trim()}`);
 
   if (response.status === 500) {
     throw new Error("500 STATUS ", response.status);

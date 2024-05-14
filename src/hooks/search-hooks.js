@@ -19,6 +19,7 @@ function useFetchSearchResults(searchValue, activePage, entriesPerPage) {
   const { isLoading: isLoadingSearch, data: searchResults } = useQuery({
     queryKey: ["search", searchValue, activePage],
     queryFn: () => getSearchResults(searchValue, activePage, entriesPerPage),
+    enabled: Boolean(searchValue),
   });
 
   return { isLoadingSearch, searchResults };

@@ -1,6 +1,6 @@
 import { Pagination, Group } from "@mantine/core";
 
-export default function CategoryPagination({
+export default function ListPagination({
   pageTotal,
   activePage,
   setActivePage,

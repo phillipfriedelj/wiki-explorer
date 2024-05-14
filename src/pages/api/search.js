@@ -46,7 +46,7 @@ export default async function handler(req, res) {
       const searchResultsCount = await getSearchResultsCount();
       res.status(200).json(searchResultsCount);
     } else {
-      res.status(404).json({ error: "malformed request" });
+      res.status(400).json({ error: "malformed request" });
     }
   } catch (err) {
     console.error(err);

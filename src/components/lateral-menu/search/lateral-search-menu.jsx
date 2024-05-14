@@ -6,19 +6,12 @@ import {
   ActionIcon,
   em,
   Divider,
-  Text,
 } from "@mantine/core";
-import CategoryPagination from "../category_pagination";
+import ListPagination from "../list-pagination";
 import { useEffect, useState } from "react";
 import CategoryList from "@/components/lateral-menu/category-list";
 import { IconCaretLeftRight } from "@tabler/icons-react";
 import { useMediaQuery } from "@mantine/hooks";
-
-import {
-  useFetchCategories,
-  useFetchCategoryCount,
-  usePrefetchCategories,
-} from "../../../hooks/category-hooks";
 
 import {
   useFetchSearchResults,
@@ -32,22 +25,12 @@ export default function LateralSearchMenu({
   collapsed,
 }) {
   const entriesPerPage = 50;
-  const [selectedLetter, setSelectedLetter] = useState("a");
   const [activePage, setActivePage] = useState(1);
   const [searchActivePage, setSearchActivePage] = useState(1);
 
   const [searchValue, setSearchValue] = useState("");
 
   const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
-
-  const { isLoadingCount, categoryCount } =
-    useFetchCategoryCount(selectedLetter);
-  const { isLoading, data } = useFetchCategories(
-    selectedLetter,
-    activePage,
-    entriesPerPage
-  );
-  usePrefetchCategories(activePage, selectedLetter, entriesPerPage);
 
   const { isLoadingSearchCount, searchCount } =
     useFetchSearchResultsCount(searchValue);
@@ -66,78 +49,12 @@ export default function LateralSearchMenu({
     }
   }, [isMobile]);
 
-  function displayResultsList() {
-    if (searchValue && searchValue !== "") {
-      console.log("SEARCHING");
-      if (!isLoadingSearch && searchResults.length === 0) {
-        return <Text>No matching results found...</Text>;
-      } else {
-        return (
-          <CategoryList
-            data={searchResults}
-            isLoading={isLoadingSearch}
-            setSelectedLink={setSelectedLink}
-          />
-        );
-      }
-    } else {
-      console.log("NORMAL");
-      return (
-        <CategoryList
-          data={data}
-          isLoading={isLoading}
-          setSelectedLink={setSelectedLink}
-        />
-      );
-    }
-  }
-
   function handleSearch(newSearchValue) {
     if (newSearchValue === "") {
       setSearchActivePage(1);
     }
     setSearchValue(newSearchValue);
   }
-
-  function getPageNumber() {
-    if (searchResults && searchResults.length > 0) {
-      if (!isLoadingSearch && searchResults.length === 0) {
-        return 0;
-      } else {
-        return searchCount / entriesPerPage;
-      }
-    } else {
-      return categoryCount / entriesPerPage;
-    }
-  }
-
-  function getActivePage() {
-    if (searchResults && searchResults.length > 0) {
-      if (!isLoadingSearch && searchResults.length === 0) {
-        return activePage;
-      } else {
-        return searchActivePage;
-      }
-    } else {
-      return activePage;
-    }
-  }
-
-  function getActivePageSetter() {
-    if (searchResults && searchResults.length > 0) {
-      if (!isLoadingSearch && searchResults.length === 0) {
-        return setActivePage;
-      } else {
-        return setSearchActivePage;
-      }
-    } else {
-      return setActivePage;
-    }
-  }
-
-  useEffect(() => {
-    setActivePage(1);
-  }, [selectedLetter]);
 
   return (
     <Group
@@ -172,12 +89,16 @@ export default function LateralSearchMenu({
               handleSearch={handleSearch}
             />
             <Divider />
-            {displayResultsList()}
-            {!isLoadingCount && (
-              <CategoryPagination
-                pageTotal={getPageNumber()}
-                activePage={getActivePage()}
-                setActivePage={getActivePageSetter()}
+            <CategoryList
+              data={searchResults}
+              isLoading={isLoadingSearch}
+              setSelectedLink={setSelectedLink}
+            />
+            {!isLoadingSearchCount && (
+              <ListPagination
+                pageTotal={searchCount / entriesPerPage}
+                activePage={activePage}
+                setActivePage={setActivePage}
               />
             )}
           </Stack>
