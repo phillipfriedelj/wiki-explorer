@@ -4,8 +4,8 @@ import Navbar from "./navbar";
 export default function PageLayout({ lateralMenu, mainContent }) {
   return (
     <Stack
-      h={"100dvh"}
-      mah={"100dvh"}
+      h={"100%"}
+      mah={"100%"}
       align="stretch"
       justify="space-between"
       gap="xs"
