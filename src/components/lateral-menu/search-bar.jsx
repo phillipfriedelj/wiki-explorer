@@ -36,7 +36,11 @@ export default function SearchBar({ onSearch }) {
       value={searchValue}
       onChange={handleChange}
       rightSection={
-        <CloseButton aria-label="Clear input" onClick={handleClear} />
+        searchValue && searchValue !== "" ? (
+          <CloseButton aria-label="Clear input" onClick={handleClear} />
+        ) : (
+          <></>
+        )
       }
     />
   );
