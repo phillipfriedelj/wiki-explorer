@@ -1,7 +1,6 @@
 import { Pagination, Group } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
 
-export default function CategoryPagination({
+export default function ListPagination({
   pageTotal,
   activePage,
   setActivePage,

@@ -12,7 +12,7 @@ export default function PageLayout({ lateralMenu, mainContent }) {
     >
       <Navbar />
       <Flex
-        className="flex-grow"
+        className="flex-grow overflow-x-hidden"
         px={"8px"}
         pb={"8px"}
         gap={"xs"}

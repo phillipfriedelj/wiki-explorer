@@ -1,4 +1,8 @@
 async function getCategoriesByLetterAndPage(selectedLetter, page, amount) {
+  if (!selectedLetter || selectedLetter.trim() === "") {
+    return null;
+  }
+
   const response = await fetch(
     `/api/categories?letter=${selectedLetter}&page=${page}&amount=${amount}`
   );
@@ -11,6 +15,9 @@ async function getCategoriesByLetterAndPage(selectedLetter, page, amount) {
 }
 
 async function getCategoryCount(selectedLetter) {
+  if (!selectedLetter || selectedLetter.trim() === "") {
+    return null;
+  }
   const response = await fetch(`/api/categories?letter=${selectedLetter}`);
 
   if (response.status === 500) {
