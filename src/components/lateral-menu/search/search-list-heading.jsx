@@ -1,5 +1,5 @@
 import { Group, Title, ActionIcon, Stack, CloseButton } from "@mantine/core";
-import SearchBar from "./search-bar";
+import SearchBar from "../search-bar";
 import { IconArticle, IconCategory } from "@tabler/icons-react";
 
 export default function SearchListHeading({ handleSearch, setDisplayedMenu }) {

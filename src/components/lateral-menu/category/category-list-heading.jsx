@@ -1,5 +1,5 @@
 import { Group, Title, ActionIcon } from "@mantine/core";
-import LetterSelect from "./letter_select";
+import LetterSelect from "../letter_select";
 import { IconSearch } from "@tabler/icons-react";
 
 export default function CategoryListHeading({

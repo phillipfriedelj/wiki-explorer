@@ -1,3 +1,4 @@
+import SearchListHeading from "./search-list-heading";
 import {
   Stack,
   Group,
@@ -7,10 +8,9 @@ import {
   Divider,
   Text,
 } from "@mantine/core";
-import CategoryPagination from "../components/lateral-menu/category_pagination";
+import CategoryPagination from "../category_pagination";
 import { useEffect, useState } from "react";
 import CategoryList from "@/components/lateral-menu/category-list";
-import ListHeading from "@/components/lateral-menu/list-heading";
 import { IconCaretLeftRight } from "@tabler/icons-react";
 import { useMediaQuery } from "@mantine/hooks";
 
@@ -18,22 +18,26 @@ import {
   useFetchCategories,
   useFetchCategoryCount,
   usePrefetchCategories,
-} from "../hooks/category-hooks";
+} from "../../../hooks/category-hooks";
 
 import {
   useFetchSearchResults,
   useFetchSearchResultsCount,
   usePrefetchSearchResults,
-} from "@/hooks/search-hooks";
-
-export default function LateralMenu({ setSelectedLink }) {
+} from "../../../hooks/search-hooks";
+export default function LateralSearchMenu({
+  setSelectedLink,
+  setDisplayedMenu,
+  setCollapsed,
+  collapsed,
+}) {
   const entriesPerPage = 50;
   const [selectedLetter, setSelectedLetter] = useState("a");
   const [activePage, setActivePage] = useState(1);
   const [searchActivePage, setSearchActivePage] = useState(1);
 
   const [searchValue, setSearchValue] = useState("");
-  const [collapsed, setCollapsed] = useState(false);
+
   const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
 
   const { isLoadingCount, categoryCount } =
@@ -163,11 +167,9 @@ export default function LateralMenu({ setSelectedLink }) {
       >
         {(styles) => (
           <Stack h={"100%"} gap={"xs"} wrap="nowrap" style={styles}>
-            <ListHeading
-              selectedLetter={selectedLetter}
-              setSelectedLetter={setSelectedLetter}
+            <SearchListHeading
+              setDisplayedMenu={setDisplayedMenu}
               handleSearch={handleSearch}
-              setCollapsed={setCollapsed}
             />
             <Divider />
             {displayResultsList()}
