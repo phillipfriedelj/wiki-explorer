@@ -34,14 +34,6 @@ export default function LateralCategoryMenu({
   usePrefetchCategories(activePage, selectedLetter, entriesPerPage);
 
   useEffect(() => {
-    var initialSet = false;
-    if (isMobile && !initialSet) {
-      initialSet = true;
-      setCollapsed(true);
-    }
-  }, [isMobile, setCollapsed]);
-
-  useEffect(() => {
     setActivePage(1);
   }, [selectedLetter]);
 

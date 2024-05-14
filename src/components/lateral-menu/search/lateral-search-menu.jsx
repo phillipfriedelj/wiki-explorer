@@ -35,14 +35,6 @@ export default function LateralSearchMenu({
   );
   usePrefetchSearchResults(searchValue, activePage, entriesPerPage);
 
-  useEffect(() => {
-    var initialSet = false;
-    if (isMobile && !initialSet) {
-      initialSet = true;
-      setCollapsed(true);
-    }
-  }, [isMobile, setCollapsed]);
-
   function handleSearch(newSearchValue) {
     if (newSearchValue === "") {
       setSearchActivePage(1);
