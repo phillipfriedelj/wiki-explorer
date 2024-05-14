@@ -39,7 +39,7 @@ export default function LateralCategoryMenu({
       initialSet = true;
       setCollapsed(true);
     }
-  }, [isMobile]);
+  }, [isMobile, setCollapsed]);
 
   useEffect(() => {
     setActivePage(1);

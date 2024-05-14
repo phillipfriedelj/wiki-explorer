@@ -41,7 +41,7 @@ export default function LateralSearchMenu({
       initialSet = true;
       setCollapsed(true);
     }
-  }, [isMobile]);
+  }, [isMobile, setCollapsed]);
 
   function handleSearch(newSearchValue) {
     if (newSearchValue === "") {

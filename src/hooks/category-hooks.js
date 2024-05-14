@@ -37,7 +37,7 @@ function usePrefetchCategories(activePage, selectedLetter, entriesPerPage) {
       queryFn: () =>
         getCategoriesByLetterAndPage(selectedLetter, nextPage, entriesPerPage),
     });
-  }, [activePage, queryClient, selectedLetter]);
+  }, [activePage, queryClient, selectedLetter, entriesPerPage]);
 }
 
 export { useFetchCategories, useFetchCategoryCount, usePrefetchCategories };

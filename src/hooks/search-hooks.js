@@ -33,7 +33,7 @@ function usePrefetchSearchResults(searchValue, activePage, entriesPerPage) {
       queryKey: ["search", searchValue, activePage],
       queryFn: () => getSearchResults(searchValue, nextPage, entriesPerPage),
     });
-  }, [activePage, queryClient, searchValue]);
+  }, [activePage, queryClient, searchValue, entriesPerPage]);
 }
 
 export {
