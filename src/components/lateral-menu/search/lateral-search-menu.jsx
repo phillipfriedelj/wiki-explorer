@@ -60,6 +60,13 @@ export default function LateralSearchMenu({
     }
   }
 
+  function handleLinkSet(newLink) {
+    if (isMobile) {
+      setCollapsed(true);
+    }
+    setSelectedLink(newLink);
+  }
+
   return (
     <LateralMenu
       collapsed={collapsed}
@@ -72,7 +79,7 @@ export default function LateralSearchMenu({
       <CategoryList
         data={searchResults}
         isLoading={isLoadingSearch}
-        setSelectedLink={setSelectedLink}
+        setSelectedLink={handleLinkSet}
       />
       {!isLoadingSearchCount && (
         <ListPagination

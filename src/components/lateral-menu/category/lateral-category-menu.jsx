@@ -55,6 +55,13 @@ export default function LateralCategoryMenu({
     }
   }
 
+  function handleLinkSet(newLink) {
+    if (isMobile) {
+      setCollapsed(true);
+    }
+    setSelectedLink(newLink);
+  }
+
   return (
     <LateralMenu
       collapsed={collapsed}
@@ -69,7 +76,7 @@ export default function LateralCategoryMenu({
       <CategoryList
         data={data}
         isLoading={isLoading}
-        setSelectedLink={setSelectedLink}
+        setSelectedLink={handleLinkSet}
       />
       {!isLoadingCount && (
         <ListPagination
