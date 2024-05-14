@@ -3,7 +3,7 @@ import LateralCategoryMenu from "@/components/lateral-menu/category/lateral-cate
 import LateralSearchMenu from "@/components/lateral-menu/search/lateral-search-menu";
 
 export default function LateralMenu({ setSelectedLink }) {
-  const [displayedMenu, setDisplayedMenu] = useState("search");
+  const [displayedMenu, setDisplayedMenu] = useState("category");
   const [collapsed, setCollapsed] = useState(false);
   return (
     <>

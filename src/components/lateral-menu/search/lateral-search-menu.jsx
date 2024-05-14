@@ -85,7 +85,7 @@ export default function LateralSearchMenu({
         {(styles) => (
           <Stack h={"100%"} gap={"xs"} wrap="nowrap" style={styles}>
             <SearchListHeading
-              setDisplayedMenu={setDisplayedMenu}
+              setCollapsed={setCollapsed}
               handleSearch={handleSearch}
             />
             <Divider />

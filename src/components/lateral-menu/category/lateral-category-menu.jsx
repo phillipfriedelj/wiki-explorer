@@ -84,6 +84,7 @@ export default function LateralCategoryMenu({
               selectedLetter={selectedLetter}
               setSelectedLetter={setSelectedLetter}
               setDisplayedMenu={setDisplayedMenu}
+              setCollapsed={setCollapsed}
             />
             <Divider />
             <CategoryList
