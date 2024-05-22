@@ -8,7 +8,8 @@ export default async function handler(req, res) {
     const searchResultsCount = await prisma.categories.count({
       where: {
         title: {
-          contains: term.toLowerCase(), // Using startsWith for LIKE 'vene%'
+          contains: term.toLowerCase().replaceAll(" ", "_"), // Using startsWith for LIKE 'vene%'
+          mode: "insensitive",
         },
       },
     });
@@ -20,20 +21,28 @@ export default async function handler(req, res) {
     const categories = await prisma.categories.findMany({
       skip: (parseInt(page) - 1) * parseInt(amount),
       take: parseInt(amount),
+      orderBy: {
+        title: "asc",
+      },
       where: {
         title: {
-          contains: term.toLowerCase(), // Using startsWith for LIKE 'vene%'
+          contains: term.toLowerCase().replaceAll(" ", "_"), // Using startsWith for LIKE 'vene%'
+          mode: "insensitive",
         },
       },
       include: {
         categories_articles: {
           include: {
             articles: true,
+            //   articles: {
+            //     orderBy: {
+            //       title: "asc",
+            //     },
+            //   },
           },
         },
       },
     });
-
     return categories;
   }
 

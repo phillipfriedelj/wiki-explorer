@@ -36,7 +36,7 @@ export default function CategoryCard({ category, setSelectedLink }) {
               my={"2px"}
             >
               <Text size={rem(10)} fw={300} truncate="end">
-                {entry.articles.title}
+                {entry.articles.title.replaceAll("_", " ")}
               </Text>
             </Button>
           );
@@ -81,7 +81,7 @@ export default function CategoryCard({ category, setSelectedLink }) {
         }}
       >
         <Text size={rem(12)} fw={500} truncate="end">
-          {category.title}
+          {category.title.replaceAll("_", " ")}
         </Text>
       </Button>
       <Collapse in={opened} mah={"200px"}>
