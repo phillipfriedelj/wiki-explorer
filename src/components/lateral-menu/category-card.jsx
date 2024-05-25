@@ -14,8 +14,10 @@ import { useDisclosure } from "@mantine/hooks";
 import { IconChevronDown } from "@tabler/icons-react";
 import PageContainer from "./page-container";
 import useSelectedLinkStore from "@/hooks/selected-link-store";
+import useLateralMenuStore from "@/hooks/lateral-menu-store";
 
 export default function CategoryCard({ category }) {
+  const { setCollapsed } = useLateralMenuStore();
   const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
   const { setSelectedLink } = useSelectedLinkStore();
   const [opened, { toggle }] = useDisclosure(false);
@@ -57,7 +59,7 @@ export default function CategoryCard({ category }) {
             size="compact-xs"
             onClick={() => {
               if (isMobile) {
-                // setCollapsed(true);
+                setCollapsed(true);
               }
               setSelectedLink(`Category:${category.title}`);
             }}

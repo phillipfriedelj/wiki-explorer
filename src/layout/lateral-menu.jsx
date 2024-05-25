@@ -8,11 +8,10 @@ import {
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { IconCategory, IconSearch } from "@tabler/icons-react";
-export default function LateralMenu({
-  collapsed,
-  children,
-  handleLateralIconClick,
-}) {
+import useLateralMenuStore from "@/hooks/lateral-menu-store";
+
+export default function LateralMenu({ children, handleLateralIconClick }) {
+  const { collapsed } = useLateralMenuStore();
   const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
 
   return (

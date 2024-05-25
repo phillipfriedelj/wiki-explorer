@@ -10,12 +10,11 @@ import {
   useFetchCategoryCount,
   usePrefetchCategories,
 } from "../../../hooks/category-hooks";
+import useLateralMenuStore from "@/hooks/lateral-menu-store";
 
-export default function LateralCategoryMenu({
-  setDisplayedMenu,
-  setCollapsed,
-  collapsed,
-}) {
+export default function LateralCategoryMenu() {
+  const { collapsed, setCollapsed, setDisplayedMenu } = useLateralMenuStore();
+
   const entriesPerPage = 50;
   const { selectedLetter } = useSelectedLetterStore();
   const [activePage, setActivePage] = useState(1);
@@ -48,10 +47,7 @@ export default function LateralCategoryMenu({
       collapsed={collapsed}
       handleLateralIconClick={handleLateralIconClick}
     >
-      <CategoryListHeading
-        // setDisplayedMenu={setDisplayedMenu}
-        setCollapsed={setCollapsed}
-      />
+      <CategoryListHeading setCollapsed={setCollapsed} />
       <CategoryList data={data} isLoading={isLoading} />
       {!isLoadingCount && (
         <ListPagination

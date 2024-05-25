@@ -5,28 +5,16 @@ import PageLayout from "@/layout/page-layout";
 import Iframe from "./iframe";
 import LateralCategoryMenu from "./lateral-menu/category/lateral-category-menu";
 import LateralSearchMenu from "./lateral-menu/search/lateral-search-menu";
+import useLateralMenuStore from "@/hooks/lateral-menu-store";
 
 export default function CategoryExplorer() {
-  const [displayedMenu, setDisplayedMenu] = useState("category");
-  const [collapsed, setCollapsed] = useState(false);
+  const { displayedMenu } = useLateralMenuStore();
 
   function getLateralMenu() {
     if (displayedMenu === "category") {
-      return (
-        <LateralCategoryMenu
-          setDisplayedMenu={setDisplayedMenu}
-          setCollapsed={setCollapsed}
-          collapsed={collapsed}
-        />
-      );
+      return <LateralCategoryMenu />;
     } else {
-      return (
-        <LateralSearchMenu
-          setDisplayedMenu={setDisplayedMenu}
-          setCollapsed={setCollapsed}
-          collapsed={collapsed}
-        />
-      );
+      return <LateralSearchMenu />;
     }
   }
 
