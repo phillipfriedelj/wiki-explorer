@@ -1,11 +1,19 @@
 import { Stack, Button, Text, rem } from "@mantine/core";
 export default function PageContainer({ articles, setSelectedLink }) {
-  var sorted = articles?.sort((entry) => entry.articles.first_letter);
-
   function handleArticleClick(clickedArticle) {
     setSelectedLink(
       `https://en.wikipedia.org/wiki/${clickedArticle.replace(" ", "_")}`
     );
+  }
+
+  function compare_title(a, b) {
+    if (a.articles.title < b.articles.title) {
+      return -1;
+    }
+    if (a.articles.title > b.articles.title) {
+      return 1;
+    }
+    return 0;
   }
 
   return (
@@ -17,7 +25,7 @@ export default function PageContainer({ articles, setSelectedLink }) {
       py={"2px"}
       maw={"255px"}
     >
-      {sorted.map((entry) => {
+      {articles.sort(compare_title).map((entry) => {
         return (
           <Button
             key={entry.articles.title}
