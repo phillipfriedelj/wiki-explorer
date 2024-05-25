@@ -1,7 +1,5 @@
-import { PrismaClient } from "@prisma/client";
-
+import prisma from "@/util/prisma-client";
 export default async function handler(req, res) {
-  const prisma = new PrismaClient();
   const { term, page, amount } = req.query;
 
   async function getSearchResultsCount() {

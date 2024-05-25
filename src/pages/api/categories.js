@@ -1,8 +1,7 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/util/prisma-client";
 
 export default async function handler(req, res) {
   const { letter, page, amount } = req.query;
-  const prisma = new PrismaClient();
 
   async function fetchCategoriesByLetter() {
     const categories = await prisma.categories.findMany({

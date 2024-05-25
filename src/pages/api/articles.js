@@ -1,8 +1,6 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/util/prisma-client";
 
 export default async function handler(req, res) {
-  const prisma = new PrismaClient();
-
   async function getArticleCount() {
     const articleCount = await prisma.articles.aggregate({
       _count: {
