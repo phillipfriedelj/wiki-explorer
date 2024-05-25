@@ -3,6 +3,7 @@ import {
   Button,
   Text,
   rem,
+  em,
   ScrollArea,
   Flex,
   ActionIcon,

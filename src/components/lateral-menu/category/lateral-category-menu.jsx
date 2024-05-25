@@ -3,10 +3,8 @@ import ListPagination from "../list-pagination";
 import { useEffect, useState } from "react";
 import CategoryList from "@/components/lateral-menu/category-list";
 import CategoryListHeading from "./category-list-heading";
-import { useMediaQuery } from "@mantine/hooks";
 import LateralMenu from "@/layout/lateral-menu";
-import useSelectedLinkStore from "@/hooks/selected-link-store";
-
+import useSelectedLetterStore from "@/hooks/selected-letter-store";
 import {
   useFetchCategories,
   useFetchCategoryCount,
@@ -19,7 +17,7 @@ export default function LateralCategoryMenu({
   collapsed,
 }) {
   const entriesPerPage = 50;
-  const [selectedLetter, setSelectedLetter] = useState("a");
+  const { selectedLetter } = useSelectedLetterStore();
   const [activePage, setActivePage] = useState(1);
 
   const { isLoadingCount, categoryCount } =
@@ -51,9 +49,7 @@ export default function LateralCategoryMenu({
       handleLateralIconClick={handleLateralIconClick}
     >
       <CategoryListHeading
-        selectedLetter={selectedLetter}
-        setSelectedLetter={setSelectedLetter}
-        setDisplayedMenu={setDisplayedMenu}
+        // setDisplayedMenu={setDisplayedMenu}
         setCollapsed={setCollapsed}
       />
       <CategoryList data={data} isLoading={isLoading} />
