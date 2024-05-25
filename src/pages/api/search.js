@@ -1,4 +1,5 @@
-import prisma from "@/util/prisma-client";
+import prisma from "../../lib/prisma";
+
 export default async function handler(req, res) {
   const { term, page, amount } = req.query;
 

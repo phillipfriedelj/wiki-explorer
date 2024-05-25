@@ -1,4 +1,4 @@
-import prisma from "@/util/prisma-client";
+import prisma from "../../lib/prisma";
 
 export default async function handler(req, res) {
   const { letter, page, amount } = req.query;
@@ -21,6 +21,7 @@ export default async function handler(req, res) {
         },
       },
     });
+    console.log("CATEGORIES --- ", categories);
     return categories;
   }
 
