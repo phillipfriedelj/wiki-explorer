@@ -21,7 +21,8 @@
     "next": "14.2.2",
     "react": "^18",
     "react-dom": "^18",
-    "react-use-scroll-direction": "^0.1.0"
+    "react-use-scroll-direction": "^0.1.0",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "eslint": "^8",

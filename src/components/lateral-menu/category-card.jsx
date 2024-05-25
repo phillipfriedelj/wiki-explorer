@@ -8,11 +8,15 @@ import {
   ActionIcon,
   Badge,
 } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import { useDisclosure } from "@mantine/hooks";
 import { IconChevronDown } from "@tabler/icons-react";
 import PageContainer from "./page-container";
+import useSelectedLinkStore from "@/hooks/selected-link-store";
 
-export default function CategoryCard({ category, setSelectedLink }) {
+export default function CategoryCard({ category }) {
+  const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
+  const { setSelectedLink } = useSelectedLinkStore();
   const [opened, { toggle }] = useDisclosure(false);
 
   return (
@@ -51,10 +55,10 @@ export default function CategoryCard({ category, setSelectedLink }) {
             miw={0}
             size="compact-xs"
             onClick={() => {
-              console.log(`Category:${category.title}`);
-              setSelectedLink(
-                `https://en.wikipedia.org/wiki/Category:${category.title}`
-              );
+              if (isMobile) {
+                // setCollapsed(true);
+              }
+              setSelectedLink(`Category:${category.title}`);
             }}
           >
             <Text size={rem(12)} fw={500} truncate="end">
@@ -83,10 +87,7 @@ export default function CategoryCard({ category, setSelectedLink }) {
             }}
           >
             {category && category.categories_articles && (
-              <PageContainer
-                articles={category.categories_articles}
-                setSelectedLink={setSelectedLink}
-              />
+              <PageContainer articles={category.categories_articles} />
             )}
           </ScrollArea.Autosize>
         </Collapse>

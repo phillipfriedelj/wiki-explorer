@@ -5,6 +5,7 @@ import CategoryList from "@/components/lateral-menu/category-list";
 import CategoryListHeading from "./category-list-heading";
 import { useMediaQuery } from "@mantine/hooks";
 import LateralMenu from "@/layout/lateral-menu";
+import useSelectedLinkStore from "@/hooks/selected-link-store";
 
 import {
   useFetchCategories,
@@ -13,7 +14,6 @@ import {
 } from "../../../hooks/category-hooks";
 
 export default function LateralCategoryMenu({
-  setSelectedLink,
   setDisplayedMenu,
   setCollapsed,
   collapsed,
@@ -21,8 +21,6 @@ export default function LateralCategoryMenu({
   const entriesPerPage = 50;
   const [selectedLetter, setSelectedLetter] = useState("a");
   const [activePage, setActivePage] = useState(1);
-
-  const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
 
   const { isLoadingCount, categoryCount } =
     useFetchCategoryCount(selectedLetter);
@@ -47,13 +45,6 @@ export default function LateralCategoryMenu({
     }
   }
 
-  function handleLinkSet(newLink) {
-    if (isMobile) {
-      setCollapsed(true);
-    }
-    setSelectedLink(newLink);
-  }
-
   return (
     <LateralMenu
       collapsed={collapsed}
@@ -65,11 +56,7 @@ export default function LateralCategoryMenu({
         setDisplayedMenu={setDisplayedMenu}
         setCollapsed={setCollapsed}
       />
-      <CategoryList
-        data={data}
-        isLoading={isLoading}
-        setSelectedLink={handleLinkSet}
-      />
+      <CategoryList data={data} isLoading={isLoading} />
       {!isLoadingCount && (
         <ListPagination
           pageTotal={categoryCount / entriesPerPage}

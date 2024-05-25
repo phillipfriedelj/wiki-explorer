@@ -12,8 +12,8 @@ import {
   useFetchSearchResultsCount,
   usePrefetchSearchResults,
 } from "../../../hooks/search-hooks";
+import useSelectedLinkStore from "@/hooks/selected-link-store";
 export default function LateralSearchMenu({
-  setSelectedLink,
   setCollapsed,
   setDisplayedMenu,
   collapsed,
@@ -52,13 +52,6 @@ export default function LateralSearchMenu({
     }
   }
 
-  function handleLinkSet(newLink) {
-    if (isMobile) {
-      setCollapsed(true);
-    }
-    setSelectedLink(newLink);
-  }
-
   return (
     <LateralMenu
       collapsed={collapsed}
@@ -68,11 +61,7 @@ export default function LateralSearchMenu({
         setCollapsed={setCollapsed}
         handleSearch={handleSearch}
       />
-      <CategoryList
-        data={searchResults}
-        isLoading={isLoadingSearch}
-        setSelectedLink={handleLinkSet}
-      />
+      <CategoryList data={searchResults} isLoading={isLoadingSearch} />
       {!isLoadingSearchCount && (
         <ListPagination
           pageTotal={searchCount / entriesPerPage}

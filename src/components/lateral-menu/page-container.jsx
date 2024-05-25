@@ -1,10 +1,7 @@
+import useSelectedLinkStore from "@/hooks/selected-link-store";
 import { Stack, Button, Text, rem } from "@mantine/core";
-export default function PageContainer({ articles, setSelectedLink }) {
-  function handleArticleClick(clickedArticle) {
-    setSelectedLink(
-      `https://en.wikipedia.org/wiki/${clickedArticle.replace(" ", "_")}`
-    );
-  }
+export default function PageContainer({ articles }) {
+  const { setSelectedLink } = useSelectedLinkStore();
 
   function compare_title(a, b) {
     if (a.articles.title < b.articles.title) {
@@ -29,7 +26,9 @@ export default function PageContainer({ articles, setSelectedLink }) {
         return (
           <Button
             key={entry.articles.title}
-            onClick={() => handleArticleClick(entry.articles.title)}
+            onClick={() =>
+              setSelectedLink(entry.articles.title.replace(" ", "_"))
+            }
             variant="light"
             color="blue"
             size="xs"

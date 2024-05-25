@@ -2,7 +2,7 @@ import CategoryCard from "./category-card";
 import { Box, Skeleton, ScrollArea, LoadingOverlay, Text } from "@mantine/core";
 import ListSkeleton from "./list-skeleton";
 
-export default function CategoryList({ data, isLoading, setSelectedLink }) {
+export default function CategoryList({ data, isLoading }) {
   function getDisplayedListContent() {
     if (!isLoading && (!data || data.length === 0)) {
       return (
@@ -29,17 +29,9 @@ export default function CategoryList({ data, isLoading, setSelectedLink }) {
   }
 
   function generateCategoryList() {
-    return (
-      data
-        // .sort(compare_title)
-        .map((entry) => (
-          <CategoryCard
-            key={entry.title}
-            category={entry}
-            setSelectedLink={setSelectedLink}
-          />
-        ))
-    );
+    return data.map((entry) => (
+      <CategoryCard key={entry.title} category={entry} />
+    ));
   }
 
   function compare_title(a, b) {

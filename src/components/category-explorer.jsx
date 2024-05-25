@@ -2,12 +2,11 @@
 
 import { useState } from "react";
 import PageLayout from "@/layout/page-layout";
-import Iframe from "../components/iframe";
+import Iframe from "./iframe";
 import LateralCategoryMenu from "./lateral-menu/category/lateral-category-menu";
 import LateralSearchMenu from "./lateral-menu/search/lateral-search-menu";
 
 export default function CategoryExplorer() {
-  const [selectedLink, setSelectedLink] = useState("");
   const [displayedMenu, setDisplayedMenu] = useState("category");
   const [collapsed, setCollapsed] = useState(false);
 
@@ -15,7 +14,6 @@ export default function CategoryExplorer() {
     if (displayedMenu === "category") {
       return (
         <LateralCategoryMenu
-          setSelectedLink={setSelectedLink}
           setDisplayedMenu={setDisplayedMenu}
           setCollapsed={setCollapsed}
           collapsed={collapsed}
@@ -24,7 +22,6 @@ export default function CategoryExplorer() {
     } else {
       return (
         <LateralSearchMenu
-          setSelectedLink={setSelectedLink}
           setDisplayedMenu={setDisplayedMenu}
           setCollapsed={setCollapsed}
           collapsed={collapsed}
@@ -33,10 +30,5 @@ export default function CategoryExplorer() {
     }
   }
 
-  return (
-    <PageLayout
-      lateralMenu={getLateralMenu()}
-      mainContent={<Iframe selectedLink={selectedLink} />}
-    />
-  );
+  return <PageLayout lateralMenu={getLateralMenu()} mainContent={<Iframe />} />;
 }
