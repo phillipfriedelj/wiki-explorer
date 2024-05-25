@@ -1,55 +1,10 @@
-import {
-  Stack,
-  Collapse,
-  Button,
-  Text,
-  rem,
-  ScrollArea,
-  Flex,
-} from "@mantine/core";
+import { Collapse, Button, Text, rem, ScrollArea, Flex } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconChevronDown } from "@tabler/icons-react";
+import PageContainer from "./page-container";
 
 export default function CategoryCard({ category, setSelectedLink }) {
   const [opened, { toggle }] = useDisclosure(false);
-
-  function parseArticles(articles) {
-    var sorted = articles?.sort((entry) => entry.articles.first_letter);
-    return (
-      <Stack
-        align="stretch"
-        justify="flex-start"
-        gap="0px"
-        px={"5px"}
-        py={"2px"}
-        maw={"255px"}
-      >
-        {sorted.map((entry) => {
-          return (
-            <Button
-              key={entry.articles.title}
-              onClick={() => handleArticleClick(entry.articles.title)}
-              variant="light"
-              color="blue"
-              size="xs"
-              justify="start"
-              my={"2px"}
-            >
-              <Text size={rem(10)} fw={300} truncate="end">
-                {entry.articles.title.replaceAll("_", " ")}
-              </Text>
-            </Button>
-          );
-        })}
-      </Stack>
-    );
-  }
-
-  function handleArticleClick(clickedArticle) {
-    setSelectedLink(
-      `https://en.wikipedia.org/wiki/${clickedArticle.replace(" ", "_")}`
-    );
-  }
 
   return (
     <Flex
@@ -66,11 +21,21 @@ export default function CategoryCard({ category, setSelectedLink }) {
         variant="filled"
         size="xs"
         justify="space-between"
-        rightSection={<IconChevronDown size={14} />}
-        onClick={toggle}
+        rightSection={
+          category.categories_articles.length > 0 ? (
+            <IconChevronDown size={14} />
+          ) : (
+            <></>
+          )
+        }
+        onClick={
+          category.categories_articles.length > 0
+            ? toggle
+            : setSelectedLink(category.title)
+        }
         styles={{
           root: {
-            transition: "all 1s ease-out;",
+            transition: "all 1s ease-out",
             borderBottomRightRadius: `${
               opened ? "0px" : "var(--mantine-radius-default)"
             }`,
@@ -96,9 +61,12 @@ export default function CategoryCard({ category, setSelectedLink }) {
             },
           }}
         >
-          {category &&
-            category.categories_articles &&
-            parseArticles(category.categories_articles)}
+          {category && category.categories_articles && (
+            <PageContainer
+              articles={category.categories_articles}
+              setSelectedLink={setSelectedLink}
+            />
+          )}
         </ScrollArea.Autosize>
       </Collapse>
     </Flex>

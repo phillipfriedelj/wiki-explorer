@@ -1,5 +1,6 @@
-import CategoryCard from "./category_card";
+import CategoryCard from "./category-card";
 import { Box, Skeleton, ScrollArea, LoadingOverlay, Text } from "@mantine/core";
+import ListSkeleton from "./list-skeleton";
 
 export default function CategoryList({ data, isLoading, setSelectedLink }) {
   function generateCategoryList() {
@@ -10,24 +11,6 @@ export default function CategoryList({ data, isLoading, setSelectedLink }) {
         setSelectedLink={setSelectedLink}
       />
     ));
-  }
-
-  function generateSkeleton() {
-    return (
-      <Box miw={"300px"} w={"300px"} className="p-2">
-        {Array(15)
-          .fill(0)
-          .map((_, index) => (
-            <Skeleton
-              color="blue"
-              my={"5px"}
-              key={index}
-              h={"30px"}
-              animate={false}
-            />
-          ))}
-      </Box>
-    );
   }
 
   function getDisplayedListContent() {
@@ -47,7 +30,7 @@ export default function CategoryList({ data, isLoading, setSelectedLink }) {
             zIndex={1000}
             overlayProps={{ radius: "md", blur: 2 }}
           />
-          {generateSkeleton()}
+          <ListSkeleton />
         </>
       );
     } else {
