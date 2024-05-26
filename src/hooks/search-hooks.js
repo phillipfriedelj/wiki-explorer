@@ -30,7 +30,7 @@ function usePrefetchSearchResults(searchValue, activePage, entriesPerPage) {
   useEffect(() => {
     const nextPage = activePage + 1;
     queryClient.prefetchQuery({
-      queryKey: ["search", searchValue, activePage],
+      queryKey: ["search", searchValue, nextPage],
       queryFn: () => getSearchResults(searchValue, nextPage, entriesPerPage),
     });
   }, [activePage, queryClient, searchValue, entriesPerPage]);

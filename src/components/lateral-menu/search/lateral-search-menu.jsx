@@ -1,9 +1,7 @@
 import SearchListHeading from "./search-list-heading";
-import { em } from "@mantine/core";
 import ListPagination from "../list-pagination";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CategoryList from "@/components/lateral-menu/category-list";
-import { useMediaQuery } from "@mantine/hooks";
 import LateralMenu from "@/layout/lateral-menu";
 import useLateralMenuStore from "@/hooks/lateral-menu-store";
 import {
@@ -17,7 +15,6 @@ export default function LateralSearchMenu() {
 
   const entriesPerPage = 50;
   const [activePage, setActivePage] = useState(1);
-  const [searchActivePage, setSearchActivePage] = useState(1);
 
   const [searchValue, setSearchValue] = useState("");
 
@@ -25,14 +22,14 @@ export default function LateralSearchMenu() {
     useFetchSearchResultsCount(searchValue);
   const { isLoadingSearch, searchResults } = useFetchSearchResults(
     searchValue,
-    searchActivePage,
+    activePage,
     entriesPerPage
   );
   usePrefetchSearchResults(searchValue, activePage, entriesPerPage);
 
   function handleSearch(newSearchValue) {
     if (newSearchValue === "") {
-      setSearchActivePage(1);
+      setActivePage(1);
     }
     setSearchValue(newSearchValue);
   }
@@ -46,6 +43,10 @@ export default function LateralSearchMenu() {
       setDisplayedMenu("category");
     }
   }
+
+  useEffect(() => {
+    console.log("NEW PAGE ", activePage);
+  }, [activePage]);
 
   return (
     <LateralMenu

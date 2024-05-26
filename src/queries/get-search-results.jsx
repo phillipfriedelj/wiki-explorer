@@ -1,4 +1,12 @@
 async function getSearchResults(searchValue, page, amount) {
+  console.log(
+    "SEARCH  RESULTS ::: ",
+    // searchResults,
+    " -- ",
+    searchValue,
+    page,
+    amount
+  );
   if (!searchValue || searchValue.trim() === "") {
     return null;
   }
@@ -10,6 +18,7 @@ async function getSearchResults(searchValue, page, amount) {
     throw new Error("500 STATUS ", response.status);
   }
   const searchResults = await response.json();
+
   return searchResults;
 }
 
